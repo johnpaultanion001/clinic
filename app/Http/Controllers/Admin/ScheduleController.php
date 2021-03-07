@@ -9,6 +9,7 @@ use App\Venue;
 use Carbon\Carbon;
 use App\User;
 use App\Event;
+use App\AvailableDate;
 use App\Schedule;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ class ScheduleController extends Controller
             'model'      => '\\App\\Schedule',
             'date_field' => 'date_time',
             'field'      => 'purpose',
-            'prefix'     => 'Schedule',
+            'prefix'     => 'You have scheduled in this date',
             'suffix'     => '',
             'route'      => 'admin.schedule.edit',
         ],
@@ -58,8 +59,7 @@ class ScheduleController extends Controller
                 }
 
                 $events[] = [
-                    'title' => trim($source['prefix'] . " " . $model->{$source['field']}
-                        . " " . $source['suffix']),
+                    'title' => trim($source['prefix']),
                     'start' => $crudFieldValue,
                     'url'   => route($source['route'], $model->id),
                 ];
@@ -138,27 +138,43 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(Request $request)
     {
         $this->validate($request,[
             'date_time' => [
-                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+                'date_format:' . config('panel.date_format') ,
                 'required',
             ],
             'purpose' => 'required',
-
-           
         ]);
-        $userid = auth()->user()->id;
+        
+        
 
+        $userid = auth()->user()->id;
+        
+        //$availabledate = new AvailableDate();
         $schedule = new Schedule();
+        $date = Schedule::where('date_time', $request->date_time)->get()->count();
+
+        if($date > 9){
+            return response()->json("maxdate");
+        }
+
+        //schedule table
         $schedule->user_id = $userid;
         $schedule->date_time = $request->date_time;
         $schedule->purpose = $request->purpose;
-        
         $schedule->save();
 
         if($schedule){
+            
+            // $availabledate->date_scheduled = $request->date_time;
+            // $availabledate->available_slots = 1;
+            // $availabledate->max_slots = 5;
+            // $availabledate->save();
+
             return response()->json("success");
             
         }else{

@@ -14,11 +14,17 @@ $(document).ready(function () {
   moment.updateLocale('en', {
     week: {dow: 1} // Monday is the first day of the week
   })
-
+  //var disabledDate = ['2021-03-08'];
   $('.date').datetimepicker({
     format: 'YYYY-MM-DD',
-    locale: 'en'
-  })
+    locale: 'en',
+    minDate: new Date(),
+    daysOfWeekDisabled: [0,6]
+    //disabledDates: disabledDate
+
+    
+   })
+
 
   $('.datetime').datetimepicker({
     format: 'YYYY-MM-DD HH:mm:ss',

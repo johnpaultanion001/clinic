@@ -39,11 +39,11 @@
                             
                             <div class="form-group">
                                 <label for="date_timeL">Date And Time: </label>
-                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose Date And Time" required /> 
+                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose Date And Time" autocomplete="off" required /> 
                             </div>
 
                             <div class="form-group">
-                                <textarea class="form-control" id="purpose" name="purpose" placeholder="Enter Purpose" required></textarea>
+                                <textarea class="form-control"  id="purpose" name="purpose" placeholder="Enter Purpose" required></textarea>
                             </div>
                             
                             <input class="btn btn-success" type="submit" value="Submit">
@@ -76,8 +76,67 @@
             $('#calendar').fullCalendar({
                 // put your options and callbacks here
                 events: events,
+                selectable: true,
+                selectHelper: true,
+                
+                //editable: true,
+                
+                 select: function (start,today,end) {
+
+                     var startDate = moment(start),
+                     endDate = moment(end),
+                     date = startDate.clone(),
+                     isWeekend = false;
+                     var today = moment().format('YYYY-MM-DD');
+                     var start = moment(start, 'DD.MM.YYYY').format('YYYY-MM-DD');
+
+                    if(start < today){
+                        alert("Back date event not allowed ");
+                        $('#calendar').fullCalendar('unselect');
+                        return false
+                    }
+                    
+                   
+                                    
+                     // var title = prompt(start);
+                    document.getElementById("date_time").value = start;
+                     //$('#form_result').html(start);
+                     $("#exampleModal").modal("show");
+                     $('#calendar').fullCalendar('unselect');
+                    
+                    
+                
+                 }
+                // select: (start, end, allDay) => {
+                //         var startDate = moment(start),
+                //         endDate = moment(end),
+                //         date = startDate.clone(),
+                //         isWeekend = false;
+
+                //         while (date.isBefore(endDate)) {
+                //             if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
+                //                 isWeekend = true;
+                //             }    
+                //             date.add(1, 'day');
+                //         }
+
+                //         if (isWeekend) {
+                //             alert('can\'t add event - weekend');
+
+                //             return false;
+                //         }
+
+                //         this.startDate= startDate.format("YYYY-MM-DD");
+                //         this.endDate= endDate.format("YYYY-MM-DD");   
+
+                //         document.getElementById("date_time").value = startDate;
+                //         $("#exampleModal").modal("show");
+                //     }
+
             })
         });
+
+        
 
     function getCustomerData(){
         $.ajax({
@@ -112,6 +171,10 @@
                 swal("Great", "Successfully Client Data Inserted", "success");
                 form[0].reset();
                 location.reload();
+            }else if(data == "maxdate"){
+                //swal("Great", "Error, Your choose date  is full", "error");
+                $('#form_result').html('<div class="alert alert-danger">Error, Your choose date  is full </div>');
+                form[0].reset();
             }
         },
 

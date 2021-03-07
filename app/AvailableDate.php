@@ -6,24 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Schedule extends Model
+class AvailableDate extends Model
 {
     use SoftDeletes;
 
-    public $table = 'schedules';
+    public $table = 'available_dates';
 
     protected $dates = [
-        'date_time',
+        'date_scheduled',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
     protected $fillable = [
-        'user_id',
-        'purpose',
-        'date_time',
+        'date_scheduled',
+        'available_slots',
+        'max_slots',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -36,11 +35,6 @@ class Schedule extends Model
 
     public function setStartTimeAttribute($value)
     {
-        $this->attributes['date_time'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        $this->attributes['date_scheduled'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 }
