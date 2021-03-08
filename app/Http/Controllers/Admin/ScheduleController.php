@@ -11,6 +11,7 @@ use App\User;
 use App\Event;
 use App\AvailableDate;
 use App\Schedule;
+use App\Purpose;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Validator;
@@ -22,7 +23,8 @@ class ScheduleController extends Controller
         [
             'model'      => '\\App\\Schedule',
             'date_field' => 'date_time',
-            'field'      => 'purpose',
+            'field'      => 'time',
+            'purpose'      => 'name',
             'prefix'     => 'You have scheduled in this date',
             'suffix'     => '',
             'route'      => 'admin.schedule.edit',
@@ -59,14 +61,14 @@ class ScheduleController extends Controller
                 }
 
                 $events[] = [
-                    'title' => trim($source['prefix']),
-                    'start' => $crudFieldValue,
+                    'title' => $model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                    'start' => $crudFieldValue, 
                     'url'   => route($source['route'], $model->id),
                 ];
             }
         }
-
-        return view('client.schedule.schedule', compact('events', 'venues'));
+        $purposes = Purpose::all();
+        return view('client.schedule.schedule', compact('events', 'venues','purposes'));
     }
 
     public function list()
@@ -147,7 +149,11 @@ class ScheduleController extends Controller
                 'date_format:' . config('panel.date_format') ,
                 'required',
             ],
-            'purpose' => 'required',
+            'time' => [
+                'required',
+            ],
+            'purpose_id' => 'required',
+
         ]);
         
         
@@ -156,16 +162,47 @@ class ScheduleController extends Controller
         
         //$availabledate = new AvailableDate();
         $schedule = new Schedule();
-        $date = Schedule::where('date_time', $request->date_time)->get()->count();
 
-        if($date > 9){
+        $onedateuser = Schedule::where('date_time', $request->date_time)
+                                ->where('user_id', $userid)
+                                ->get()->count();
+
+        $onedatebytime = Schedule::where('date_time', $request->date_time)
+                                ->where('time', $request->time)
+                                ->get()->count();
+
+        $fulldate = Schedule::where('date_time', $request->date_time)->get()->count();
+        
+        $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
+                                ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
+                                ,"4:20 AM","4:40 AM","5:00 AM","5:20 AM","5:40 AM","6:00 AM","6:20 AM"
+                                ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM","4:00 PM","4:20 PM","4:40 PM"
+                                ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
+                                ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
+                                ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
+
+        if (in_array($request->time, $notofficetime))
+        {
+            return response()->json("notofficehr");
+        }
+        
+        if($fulldate > 9){
             return response()->json("maxdate");
         }
+        if($onedateuser > 0){
+            return response()->json("onedate");
+        }
+        if($onedatebytime > 0){
+            return response()->json("onetime");
+        }
 
+        
+       
         //schedule table
         $schedule->user_id = $userid;
         $schedule->date_time = $request->date_time;
-        $schedule->purpose = $request->purpose;
+        $schedule->time = $request->time;
+        $schedule->purpose_id = $request->purpose_id;
         $schedule->save();
 
         if($schedule){
@@ -178,7 +215,7 @@ class ScheduleController extends Controller
             return response()->json("success");
             
         }else{
-            return response()->json("error");
+            return response()->json(["error"]);
         }
     }
 

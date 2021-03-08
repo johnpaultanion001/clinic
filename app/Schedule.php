@@ -22,8 +22,9 @@ class Schedule extends Model
 
     protected $fillable = [
         'user_id',
-        'purpose',
+        'purpose_id',
         'date_time',
+        'time',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -37,10 +38,15 @@ class Schedule extends Model
     public function setStartTimeAttribute($value)
     {
         $this->attributes['date_time'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        //$this->attributes['time'] = $value ? Carbon::createFromFormat(config('panel.time_format'), $value)->format('H:i') : null;
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function purpose()
+    {
+        return $this->belongsTo(Purpose::class, 'purpose_id');
     }
 }

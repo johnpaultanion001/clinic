@@ -38,12 +38,24 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label for="date_timeL">Date And Time: </label>
-                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose Date And Time" autocomplete="off" required /> 
+                                <label for="date_timeL">Date : </label>
+                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose a Date" autocomplete="off" required /> 
                             </div>
 
                             <div class="form-group">
-                                <textarea class="form-control"  id="purpose" name="purpose" placeholder="Enter Purpose" required></textarea>
+                                <label for="date_timeT">Time : </label>
+                                <input type="text" id="time" name="time" class="form-control timepicker" placeholder="Choose a Time" autocomplete="off" required /> 
+                            </div>
+
+                            
+                            <div class="form-group">
+                                <label class="control-label" >General Checkup: </label>
+                                <select name="purpose_id" id="purpose_id" class="form-control select2">
+                                    <option value="" disabled selected>Select Purposes</option>
+                                    @foreach ($purposes as $purpose)
+                                        <option value="{{$purpose->id}}">{{$purpose->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             
                             <input class="btn btn-success" type="submit" value="Submit">
@@ -81,50 +93,60 @@
                 
                 //editable: true,
                 
-                 select: function (start,today,end) {
+                //  select: function (start,today,end,allDay) {
 
-                     var startDate = moment(start),
-                     endDate = moment(end),
-                     date = startDate.clone(),
-                     isWeekend = false;
-                     var today = moment().format('YYYY-MM-DD');
-                     var start = moment(start, 'DD.MM.YYYY').format('YYYY-MM-DD');
+                //       var startDate = moment(start),
+                //       endDate = moment(end),
+                //       date = startDate.clone(),
+                //       isWeekend = false;
 
-                    if(start < today){
-                        alert("Back date event not allowed ");
-                        $('#calendar').fullCalendar('unselect');
-                        return false
-                    }
+                //      var today = moment().format('YYYY-MM-DD');
+                //      var clickdate = moment(start, 'DD.MM.YYYY').format('YYYY-MM-DD');
+
+                //     if(clickdate < today){
+                //         alert("Past date event not allowed ");
+                //         $('#calendar').fullCalendar('unselect');
+                //         return false
+                //     }
                     
                    
-                                    
-                     // var title = prompt(start);
-                    document.getElementById("date_time").value = start;
-                     //$('#form_result').html(start);
-                     $("#exampleModal").modal("show");
-                     $('#calendar').fullCalendar('unselect');
+                //      while (date.isBefore(endDate)) {
+                //              if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
+                //               isWeekend = true;
+                //               }    
+                //               date.add(1, 'day');
+                //           }
+
+                //      if (isWeekend) {
+                //          alert('can\'t add event - weekend');
+                //          return false;
+                //      }                
+                     
+                //     document.getElementById("date_time").value = clickdate;
+                //     $("#exampleModal").modal("show");
+                //     $('#calendar').fullCalendar('unselect');
                     
                     
                 
-                 }
-                // select: (start, end, allDay) => {
-                //         var startDate = moment(start),
-                //         endDate = moment(end),
-                //         date = startDate.clone(),
-                //         isWeekend = false;
+                //  }
+                //  select: (start, end, allDay) => {
+                //          var startDate = moment(start),
+                //          endDate = moment(end),
+                //          date = startDate.clone(),
+                //          isWeekend = false;
 
-                //         while (date.isBefore(endDate)) {
-                //             if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
-                //                 isWeekend = true;
-                //             }    
-                //             date.add(1, 'day');
-                //         }
+                //          while (date.isBefore(endDate)) {
+                //              if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
+                //              isWeekend = true;
+                //              }    
+                //              date.add(1, 'day');
+                //          }
 
-                //         if (isWeekend) {
-                //             alert('can\'t add event - weekend');
+                //          if (isWeekend) {
+                //              alert('can\'t add event - weekend');
 
-                //             return false;
-                //         }
+                //              return false;
+                //          }
 
                 //         this.startDate= startDate.format("YYYY-MM-DD");
                 //         this.endDate= endDate.format("YYYY-MM-DD");   
@@ -132,6 +154,36 @@
                 //         document.getElementById("date_time").value = startDate;
                 //         $("#exampleModal").modal("show");
                 //     }
+
+                select: (start, end, allDay) => {
+                          var startDate = moment(start),
+                          endDate = moment(end),
+                          date = startDate.clone(),
+                          isWeekend = false;
+
+                          while (date.isBefore(endDate)) {
+                              if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
+                              isWeekend = true;
+                              }    
+                              date.add(1, 'day');
+                          }
+
+                          var clickdate = moment(start, 'DD.MM.YYYY').format('YYYY-MM-DD');
+                          var today = moment().format('YYYY-MM-DD');
+
+                          if (isWeekend) {
+                              alert('can\'t add event - weekend');
+
+                              return false;
+                          }
+                          else if(clickdate < today){
+                           alert("Past date event not allowed ");
+                           $('#calendar').fullCalendar('unselect');
+                           return false
+                            }
+                         document.getElementById("date_time").value = clickdate;
+                         $("#exampleModal").modal("show");
+                     }
 
             })
         });
@@ -171,9 +223,26 @@
                 swal("Great", "Successfully Client Data Inserted", "success");
                 form[0].reset();
                 location.reload();
-            }else if(data == "maxdate"){
-                //swal("Great", "Error, Your choose date  is full", "error");
+            }
+            else if(data == "maxdate"){
+                
                 $('#form_result').html('<div class="alert alert-danger">Error, Your choose date  is full </div>');
+                form[0].reset();
+                
+            }
+            else if(data == "onedate"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, You have already scheduled in this date </div>');
+                form[0].reset();
+            }
+            else if(data == "notofficehr"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, The Clinic open time are 8:00 AM TO 4:00 PM </div>');
+                form[0].reset();
+            }
+            else if(data == "onetime"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time not available </div>');
                 form[0].reset();
             }
         },

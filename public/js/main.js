@@ -33,7 +33,9 @@ $(document).ready(function () {
   })
 
   $('.timepicker').datetimepicker({
-    format: 'HH:mm:ss'
+    format: 'LT',
+    stepping: 20,
+   
   })
 
   $('.select-all').click(function () {

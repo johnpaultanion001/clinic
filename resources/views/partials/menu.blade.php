@@ -127,7 +127,27 @@
                     </a>
                 </li>
             @endcan
-           
+            @can('purpose_access')
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        <i class="fa-fw fas fa-cog nav-icon">
+
+                        </i>
+                        Settings
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        
+                            <li class="nav-item">
+                                <a href="{{ route("admin.purposes.index") }}" class="nav-link {{ request()->is('admin/purposes') || request()->is('admin/purposes/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-circle nav-icon">
+
+                                    </i>
+                                   General Checkup List
+                                </a>
+                            </li>
+                    </ul>
+                </li>
+            @endcan
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">

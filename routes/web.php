@@ -1,13 +1,13 @@
 <?php
 
 Route::redirect('/', '/login');
-//  Route::get('/home', function () {
-//      if (session('status')) {
-//          return redirect()->route('admin.home')->with('status', session('status'));
-//      }
+  Route::get('admin/today', function () {
+      if (session('status')) {
+          return redirect()->route('admin.today')->with('status', session('status'));     
+         }
 
-//      return redirect()->route('admin.home');
-//  });
+      return redirect()->route('admin.today');
+  });
 
 Auth::routes(['register' => false]);
 
@@ -43,6 +43,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('meetings', 'MeetingsController');
 
     Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
+
+    // Purposes
+    Route::resource('purposes', 'PurposeController');
     
     //client schedule
     // Route::get('schedule', 'ScheduleController@index')->name('schedule.index');
