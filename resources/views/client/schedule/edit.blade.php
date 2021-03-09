@@ -60,7 +60,7 @@
             
             <div align="right">
                 <a href="{{ route("admin.schedule.index") }}" class="btn btn-success">Back</a>
-                <input class="btn btn-info" type="submit" value="Cancel this scheduled">
+                <input class="btn btn-info" type="submit" value="Submit">
             </div>
            
         </form>

@@ -4,14 +4,44 @@
    
     <div class="card-header">
         <h4>Schedule</h4>
-        <div align="right">
-            <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
-            <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">
-                        <i class="nav-icon fas fa-fw fa-tachometer-alt">
-                        </i>
-                    List
-            </a>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                        <form action="{{ route("admin.schedule.filterbydate") }}" method="post" enctype="multipart/form-data">
+                            {!! csrf_field() !!}
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <small>From : </small>
+                                                <input type="text" id="date_from" name="date_from" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <small>To : </small>
+                                                <input type="text" id="date_to" name="date_to" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        <br>
+                                             <input class=" form-group btn btn-info" type="submit" value="Filter">  
+                                        </div>
+                                    </div>
+                                </div>                            
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div align="right">
+                            <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
+                            <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">List</a>
+                        </div>
+                    </div>
+               
+            </div>
         </div>
+       
+    
     </div>
 
     <div class="card-body">  

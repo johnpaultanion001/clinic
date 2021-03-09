@@ -24,6 +24,7 @@ class ScheduleController extends Controller
             'model'      => '\\App\\Schedule',
             'date_field' => 'date_time',
             'field'      => 'time',
+            'user'      => 'name',
             'purpose'      => 'name',
             'prefix'     => 'You have scheduled in this date',
             'suffix'     => '',
@@ -34,42 +35,52 @@ class ScheduleController extends Controller
 
     public function index()
     {
-
-        abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
         $events = [];
-
-        $venues = Venue::all();
-
         $userid = auth()->user()->id;
 
-        foreach ($this->sources as $source) {
-            //  $calendarEvents = $source['model']::when(request('user_id') && $source['model'] == '\App\Schedule', function($query) {
-            //      return $query->where($userid, $userid);
-            //  })->get();
+        abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
+        if($userrole == 'Admin'){
+            foreach ($this->sources as $source) {
+                 $data = Schedule::where('isCancel', '0')        
+                                   ->get();           
 
+                foreach ($data  as $model) {
+                    $crudFieldValue = $model->getOriginal($source['date_field']);
+    
+                    if (!$crudFieldValue) {
+                        continue;
+                    }
+    
+                    $events[] = [
+                        'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                        'start' => $crudFieldValue, 
+                        'url'   => route($source['route'], $model->id),
+                    ];
+                }
+            }
+            $purposes = Purpose::all();
+            return view('client.schedule.schedule', compact('events','purposes'));
+        }
+        foreach ($this->sources as $source) {
              $data = Schedule::where('user_id', $userid)
                             ->where('isCancel', '0')        
-                            ->get();
-
-            
-            
+                            ->get();            
             foreach ($data  as $model) {
                 $crudFieldValue = $model->getOriginal($source['date_field']);
 
                 if (!$crudFieldValue) {
                     continue;
                 }
-
                 $events[] = [
-                    'title' => $model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                    'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
                     'start' => $crudFieldValue, 
                     'url'   => route($source['route'], $model->id),
                 ];
             }
         }
         $purposes = Purpose::all();
-        return view('client.schedule.schedule', compact('events', 'venues','purposes'));
+        return view('client.schedule.schedule', compact('events','purposes'));
     }
 
     public function list()
@@ -79,27 +90,51 @@ class ScheduleController extends Controller
         return view('client.schedule.list', compact('schedules'));
     }
 
-    public function getdata(){
+    public function filterbydate(Request $request){
+        abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+     
+         $this->validate($request,[
+             'date_from' => [
+                'required','date','before_or_equal:date_to'
+             ],
+             'date_to' => [
+                 'required','date',
+              ],
+            ]);
 
-    	abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+        $start = Carbon::parse($request->date_from);
+        $end = Carbon::parse($request->date_to);
         $events = [];
-
-        $venues = Venue::all();
-
         $userid = auth()->user()->id;
+        $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
+        if($userrole == 'Admin'){
+            foreach ($this->sources as $source) {
 
-        foreach ($this->sources as $source) {
-            //  $calendarEvents = $source['model']::when(request('user_id') && $source['model'] == '\App\Schedule', function($query) {
-            //      return $query->where($userid, $userid);
-            //  })->get();
+                $filterdate = Schedule::whereBetween('date_time', [$start, $end])->get();
+                
+                foreach ($filterdate as $model) {
+                    $crudFieldValue = $model->getOriginal($source['date_field']);
 
-             $data = Schedule::where('user_id', $userid)
-                        ->get();
+                    if (!$crudFieldValue) {
+                        continue;
+                    }
 
+                    $events[] = [
+                        'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                        'start' => $crudFieldValue, 
+                        'url'   => route($source['route'], $model->id),
+                    ];
+                }
+            }
+            $purposes = Purpose::all();
+            return view('client.schedule.schedule', compact('events','purposes'));
+         }
+         foreach ($this->sources as $source) {
+            $filterdate = Schedule::whereBetween('date_time', [$start, $end])
+                                    ->where('user_id', $userid)
+                                    ->get();
             
-            
-            foreach ($data  as $model) {
+            foreach ($filterdate as $model) {
                 $crudFieldValue = $model->getOriginal($source['date_field']);
 
                 if (!$crudFieldValue) {
@@ -107,15 +142,15 @@ class ScheduleController extends Controller
                 }
 
                 $events[] = [
-                    'title' => trim($source['prefix'] . " " . $model->{$source['field']}
-                        . " " . $source['suffix']),
-                    'start' => $crudFieldValue,
+                    'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                    'start' => $crudFieldValue, 
                     'url'   => route($source['route'], $model->id),
                 ];
             }
         }
+        $purposes = Purpose::all();
+        return view('client.schedule.schedule', compact('events','purposes'));
 
-        return view('client.schedule.response', compact('events', 'venues'));
     }
 
     public function errordata($error)
@@ -145,75 +180,73 @@ class ScheduleController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'date_time' => [
-                'date_format:' . config('panel.date_format') ,
-                'required',
-            ],
-            'time' => [
-                'required',
-            ],
-            'purpose_id' => 'required',
+        try{
+            $this->validate($request,[
+                'date_time' => [
+                    'date_format:' . config('panel.date_format') ,
+                    'required',
+                ],
+                'time' => [
+                    'required',
+                ],
+                'purpose_id' => 'required',
 
-        ]);
-        $userid = auth()->user()->id;
-        
-        //$availabledate = new AvailableDate();
-        $schedule = new Schedule();
-
-        $onedateuser = Schedule::where('date_time', $request->date_time)
-                                ->where('user_id', $userid)
-                                ->get()->count();
-
-        $onedatebytime = Schedule::where('date_time', $request->date_time)
-                                ->where('time', $request->time)
-                                ->get()->count();
-
-        $fulldate = Schedule::where('date_time', $request->date_time)->get()->count();
-        
-        $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
-                                ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
-                                ,"4:20 AM","4:40 AM","5:00 AM","5:20 AM","5:40 AM","6:00 AM","6:20 AM"
-                                ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM","4:00 PM","4:20 PM","4:40 PM"
-                                ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
-                                ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
-                                ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
-
-        if (in_array($request->time, $notofficetime))
-        {
-            return response()->json("notofficehr");
-        }
-        
-        if($fulldate > 9){
-            return response()->json("maxdate");
-        }
-        if($onedateuser > 0){
-            return response()->json("onedate");
-        }
-        if($onedatebytime > 0){
-            return response()->json("onetime");
-        }
-
-        
-       
-        //schedule table
-        $schedule->user_id = $userid;
-        $schedule->date_time = $request->date_time;
-        $schedule->time = $request->time;
-        $schedule->purpose_id = $request->purpose_id;
-        $schedule->save();
-
-        if($schedule){
+            ]);
+            $userid = auth()->user()->id;
             
-            // $availabledate->date_scheduled = $request->date_time;
-            // $availabledate->available_slots = 1;
-            // $availabledate->max_slots = 5;
-            // $availabledate->save();
+            //$availabledate = new AvailableDate();
+            $schedule = new Schedule();
 
-            return response()->json("success");
+            $onedateuser = Schedule::where('date_time', $request->date_time)
+                                    ->where('user_id', $userid)
+                                    ->get()->count();
+
+            $onedatebytime = Schedule::where('date_time', $request->date_time)
+                                    ->where('time', $request->time)
+                                    ->get()->count();
+
+            $fulldate = Schedule::where('date_time', $request->date_time)->get()->count();
             
-        }else{
-            return response()->json(["error"]);
+            $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
+                                    ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
+                                    ,"4:20 AM","4:40 AM","5:00 AM","5:20 AM","5:40 AM","6:00 AM","6:20 AM"
+                                    ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM","4:00 PM","4:20 PM","4:40 PM"
+                                    ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
+                                    ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
+                                    ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
+
+            if (in_array($request->time, $notofficetime))
+            {
+                return response()->json("notofficehr");
+            }
+            
+            if($fulldate > 9){
+                return response()->json("maxdate");
+            }
+            if($onedateuser > 0){
+                return response()->json("onedate");
+            }
+            if($onedatebytime > 0){
+                return response()->json("onetime");
+            }
+            $schedule->user_id = $userid;
+            $schedule->date_time = $request->date_time;
+            $schedule->time = $request->time;
+            $schedule->purpose_id = $request->purpose_id;
+            $schedule->save();
+
+            if($schedule){
+                return response()->json("success");
+            }else{
+                return response()->json(["error"]);
+            }
+        }catch (\Throwable $e) {
+            $arr = array(
+                'message' => 'Error, Problem with some code. Try again',
+                'errorMessage' => $e->getMessage()
+            );
+
+            return redirect('admin/schedule')->with($arr);
         }
     }
 

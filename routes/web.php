@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::get('schedule', 'ScheduleController@edit')->name('schedule.edit');
     // Route::put('schedule', 'ScheduleController@update')->name('schedule.update');
     Route::resource('schedule', 'ScheduleController');   
-    Route::get('getdata',  'ScheduleController@getdata');
+    Route::post('schedule/filter',  'ScheduleController@filterbydate')->name('schedule.filterbydate');
     Route::get('schedule-list',  'ScheduleController@list')->name('schedule.list');
     Route::put('schedule-cancel/{id}',  'ScheduleController@cancel')->name('schedule.cancel');
     Route::delete('schedules/destroy', 'ScheduleController@massDestroy')->name('schedule.massDestroy');

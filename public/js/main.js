@@ -21,9 +21,10 @@ $(document).ready(function () {
     minDate: new Date(),
     daysOfWeekDisabled: [0,6],
     sideBySide: true
-    //disabledDates: disabledDate
-
-    
+   })
+   $('.filterdate').datetimepicker({
+    format: 'YYYY-MM-DD',
+    locale: 'en',
    })
 
 
