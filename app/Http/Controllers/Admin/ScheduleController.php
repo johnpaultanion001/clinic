@@ -49,7 +49,8 @@ class ScheduleController extends Controller
             //  })->get();
 
              $data = Schedule::where('user_id', $userid)
-                        ->get();
+                            ->where('isCancel', '0')        
+                            ->get();
 
             
             
@@ -155,9 +156,6 @@ class ScheduleController extends Controller
             'purpose_id' => 'required',
 
         ]);
-        
-        
-
         $userid = auth()->user()->id;
         
         //$availabledate = new AvailableDate();
@@ -238,7 +236,8 @@ class ScheduleController extends Controller
      */
     public function edit(schedule $schedule)
     {
-        return view('client.schedule.edit')->with('schedule', $schedule);
+        $purposes = Purpose::all();
+        return view('client.schedule.edit', compact('schedule' , 'purposes'));
     }
 
     /**
@@ -250,7 +249,78 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, schedule $schedule)
     {
-        //
+        $this->validate($request,[
+            'date_time' => [
+                'date_format:' . config('panel.date_format') ,
+                'required',
+            ],
+            'time' => [
+                'required',
+            ],
+            'purpose_id' => 'required',
+
+        ]);
+        $userid = auth()->user()->id;
+        $onedateuser = Schedule::where('date_time', $request->date_time)
+                                ->where('user_id', $userid)
+                                ->get()->count();
+
+        $onedatebytime = Schedule::where('date_time', $request->date_time)
+                                ->where('time', $request->time)
+                                ->get()->count();
+
+        $fulldate = Schedule::where('date_time', $request->date_time)->get()->count();
+        
+        $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
+                                ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
+                                ,"4:20 AM","4:40 AM","5:00 AM","5:20 AM","5:40 AM","6:00 AM","6:20 AM"
+                                ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM","4:00 PM","4:20 PM","4:40 PM"
+                                ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
+                                ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
+                                ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
+
+     
+
+        if (in_array($request->time, $notofficetime))
+        {
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, The Clinic open time are 8:00 AM TO 4:00 PM ');
+        }
+        
+        if($fulldate > 9){
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, Your chosen date  is full');
+        }
+        if($onedateuser > 0){
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, You have already scheduled in this date ');
+        }
+        if($onedatebytime > 0){
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, Your chosen time is not available');
+        }
+       
+
+        //$schedule->user_id = $userid;
+        $schedule->date_time = $request->date_time;
+        $schedule->time = $request->time;
+        $schedule->purpose_id = $request->purpose_id;
+        $schedule->save();
+
+        if($schedule){
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('success', 'Data Updated');
+           
+        }else{
+            return response()->json(["error"]);
+        }
+    }
+
+    public function cancel($id)
+    {
+        $schedule = Schedule::find($id);
+        $schedule->isCancel = "1";
+        $schedule->save();
+        if($schedule){
+            return redirect('admin/schedule')->with('success', 'Canceled Successfully');
+        }else{
+            return response()->json(["error"]);
+        }
     }
 
     /**

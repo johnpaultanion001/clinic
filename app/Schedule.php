@@ -25,6 +25,7 @@ class Schedule extends Model
         'purpose_id',
         'date_time',
         'time',
+        'isCancel',
         'created_at',
         'updated_at',
         'deleted_at',

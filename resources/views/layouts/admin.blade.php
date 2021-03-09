@@ -69,6 +69,16 @@
                         </div>
                     </div>
                 @endif
+                @if(session('success'))
+                  <div class="alert alert-success">
+                    {{session('success')}}
+                  </div>
+                @endif
+                @if(session('error'))
+                  <div class="alert alert-danger">
+                    {{session('error')}}
+                  </div>
+                @endif
                 @if($errors->count() > 0)
                     <div class="alert alert-danger">
                         <ul class="list-unstyled">
@@ -78,6 +88,7 @@
                         </ul>
                     </div>
                 @endif
+                
                 @yield('content')
 
             </div>

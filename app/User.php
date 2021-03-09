@@ -70,4 +70,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Schedule::class, 'user_id', 'id');
     }
+    
 }

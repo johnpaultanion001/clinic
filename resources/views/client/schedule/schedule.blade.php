@@ -1,21 +1,17 @@
 @extends('layouts.admin')
 @section('content')
-<div class="row">
-    <div class="col-md-12 mb-3 right">
-        <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class="mt-2 btn btn-sm btn-success">Set Schedule</button>
-        <a href="{{ route("admin.schedule.list") }}" class="mt-2 btn btn-sm btn-success">
-                    <i class="nav-icon fas fa-fw fa-tachometer-alt">
-
-                    </i>
-                   List
-        </a>
-   </div>
-    
-</div>
-
 <div class="card">
+   
     <div class="card-header">
-        {{ trans('global.systemCalendar') }}
+        <h4>Schedule</h4>
+        <div align="right">
+            <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
+            <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">
+                        <i class="nav-icon fas fa-fw fa-tachometer-alt">
+                        </i>
+                    List
+            </a>
+        </div>
     </div>
 
     <div class="card-body">  
@@ -90,71 +86,6 @@
                 events: events,
                 selectable: true,
                 selectHelper: true,
-                
-                //editable: true,
-                
-                //  select: function (start,today,end,allDay) {
-
-                //       var startDate = moment(start),
-                //       endDate = moment(end),
-                //       date = startDate.clone(),
-                //       isWeekend = false;
-
-                //      var today = moment().format('YYYY-MM-DD');
-                //      var clickdate = moment(start, 'DD.MM.YYYY').format('YYYY-MM-DD');
-
-                //     if(clickdate < today){
-                //         alert("Past date event not allowed ");
-                //         $('#calendar').fullCalendar('unselect');
-                //         return false
-                //     }
-                    
-                   
-                //      while (date.isBefore(endDate)) {
-                //              if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
-                //               isWeekend = true;
-                //               }    
-                //               date.add(1, 'day');
-                //           }
-
-                //      if (isWeekend) {
-                //          alert('can\'t add event - weekend');
-                //          return false;
-                //      }                
-                     
-                //     document.getElementById("date_time").value = clickdate;
-                //     $("#exampleModal").modal("show");
-                //     $('#calendar').fullCalendar('unselect');
-                    
-                    
-                
-                //  }
-                //  select: (start, end, allDay) => {
-                //          var startDate = moment(start),
-                //          endDate = moment(end),
-                //          date = startDate.clone(),
-                //          isWeekend = false;
-
-                //          while (date.isBefore(endDate)) {
-                //              if (date.isoWeekday() == 6 || date.isoWeekday() == 7) {
-                //              isWeekend = true;
-                //              }    
-                //              date.add(1, 'day');
-                //          }
-
-                //          if (isWeekend) {
-                //              alert('can\'t add event - weekend');
-
-                //              return false;
-                //          }
-
-                //         this.startDate= startDate.format("YYYY-MM-DD");
-                //         this.endDate= endDate.format("YYYY-MM-DD");   
-
-                //         document.getElementById("date_time").value = startDate;
-                //         $("#exampleModal").modal("show");
-                //     }
-
                 select: (start, end, allDay) => {
                           var startDate = moment(start),
                           endDate = moment(end),
@@ -226,7 +157,7 @@
             }
             else if(data == "maxdate"){
                 
-                $('#form_result').html('<div class="alert alert-danger">Error, Your choose date  is full </div>');
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date  is full</div>');
                 form[0].reset();
                 
             }
@@ -242,7 +173,7 @@
             }
             else if(data == "onetime"){
                 
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time not available </div>');
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time is not available </div>');
                 form[0].reset();
             }
         },

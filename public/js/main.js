@@ -19,7 +19,8 @@ $(document).ready(function () {
     format: 'YYYY-MM-DD',
     locale: 'en',
     minDate: new Date(),
-    daysOfWeekDisabled: [0,6]
+    daysOfWeekDisabled: [0,6],
+    sideBySide: true
     //disabledDates: disabledDate
 
     
