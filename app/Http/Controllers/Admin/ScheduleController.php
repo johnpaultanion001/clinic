@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Venue;
 use Carbon\Carbon;
 use App\User;
-use App\Event;
 use App\AvailableDate;
 use App\Schedule;
 use App\Purpose;
@@ -38,7 +36,7 @@ class ScheduleController extends Controller
         $events = [];
         $userid = auth()->user()->id;
 
-        abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
         if($userrole == 'Admin'){
             foreach ($this->sources as $source) {
@@ -85,13 +83,25 @@ class ScheduleController extends Controller
 
     public function list()
     {
-        $schedules = Schedule::all();
+        $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
+        $userid = auth()->user()->id;
 
-        return view('client.schedule.list', compact('schedules'));
+        if($userrole == 'Admin'){
+            $schedules = Schedule::latest()->get();
+            $purposes = Purpose::latest()->get();
+            return view('client.transaction', compact('schedules', 'purposes'));
+        }else{
+            $schedules = Schedule::where('user_id', $userid)
+                                    ->where('isCancel', '0')        
+                                    ->get();  
+            $purposes = Purpose::latest()->get();
+            return view('client.transaction', compact('schedules', 'purposes'));
+        }
+       
     }
 
     public function filterbydate(Request $request){
-        abort_if(Gate::denies('schedule_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
      
          $this->validate($request,[
              'date_from' => [
@@ -110,7 +120,9 @@ class ScheduleController extends Controller
         if($userrole == 'Admin'){
             foreach ($this->sources as $source) {
 
-                $filterdate = Schedule::whereBetween('date_time', [$start, $end])->get();
+                $filterdate = Schedule::whereBetween('date_time', [$start, $end])
+                                        ->where('isCancel', '0')
+                                        ->get();
                 
                 foreach ($filterdate as $model) {
                     $crudFieldValue = $model->getOriginal($source['date_field']);
@@ -132,6 +144,7 @@ class ScheduleController extends Controller
          foreach ($this->sources as $source) {
             $filterdate = Schedule::whereBetween('date_time', [$start, $end])
                                     ->where('user_id', $userid)
+                                    ->where('isCancel', '0')
                                     ->get();
             
             foreach ($filterdate as $model) {
@@ -180,6 +193,7 @@ class ScheduleController extends Controller
 
     public function store(Request $request)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         try{
             $this->validate($request,[
                 'date_time' => [
@@ -199,13 +213,17 @@ class ScheduleController extends Controller
 
             $onedateuser = Schedule::where('date_time', $request->date_time)
                                     ->where('user_id', $userid)
+                                    ->where('isCancel', '0')
                                     ->get()->count();
 
             $onedatebytime = Schedule::where('date_time', $request->date_time)
                                     ->where('time', $request->time)
+                                    ->where('isCancel', '0')
                                     ->get()->count();
 
-            $fulldate = Schedule::where('date_time', $request->date_time)->get()->count();
+            $fulldate = Schedule::where('date_time', $request->date_time)
+                                ->where('isCancel', '0')
+                                ->get()->count();
             
             $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
                                     ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
@@ -242,11 +260,11 @@ class ScheduleController extends Controller
             }
         }catch (\Throwable $e) {
             $arr = array(
-                'message' => 'Error, Problem with some code. Try again',
+                'error' => 'Error, Problem with some code. Try again',
                 'errorMessage' => $e->getMessage()
             );
 
-            return redirect('admin/schedule')->with($arr);
+            return response()->json($arr);
         }
     }
 
@@ -269,6 +287,7 @@ class ScheduleController extends Controller
      */
     public function edit(schedule $schedule)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $purposes = Purpose::all();
         return view('client.schedule.edit', compact('schedule' , 'purposes'));
     }
@@ -282,6 +301,7 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, schedule $schedule)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $this->validate($request,[
             'date_time' => [
                 'date_format:' . config('panel.date_format') ,
@@ -346,6 +366,7 @@ class ScheduleController extends Controller
 
     public function cancel($id)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $schedule = Schedule::find($id);
         $schedule->isCancel = "1";
         $schedule->save();
@@ -364,14 +385,15 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $schedule->delete();
         return back();
     }
 
     public function massDestroy(MassDestroyScheduleRequest $request)
     {
+        abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         Schedule::whereIn('id', request('ids'))->delete();
-
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

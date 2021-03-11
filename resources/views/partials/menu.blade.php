@@ -11,7 +11,7 @@
                 </a>
             </li>
             
-            @can('about_access')
+            @can('about_view')
                 <li class="nav-item">
                     <a href="{{ route("admin.about") }}" class="nav-link">
                         <i class="nav-icon far fa-address-card">
@@ -64,38 +64,7 @@
                     </ul>
                 </li>
             @endcan
-            @can('venue_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.venues.index") }}" class="nav-link {{ request()->is('admin/venues') || request()->is('admin/venues/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
-
-                        </i>
-                        {{ trans('cruds.venue.title') }}
-                    </a>
-                </li>
-            @endcan
-            @can('event_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.events.index") }}" class="nav-link {{ request()->is('admin/events') || request()->is('admin/events/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
-
-                        </i>
-                        {{ trans('cruds.event.title') }}
-                    </a>
-                </li>
-            @endcan
-            @can('meeting_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.meetings.index") }}" class="nav-link {{ request()->is('admin/meetings') || request()->is('admin/meetings/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
-
-                        </i>
-                        {{ trans('cruds.meeting.title') }}
-                    </a>
-                </li>
-            @endcan
-
-            @can('schedule_access')
+            @can('schedule_view')
             <li class="nav-item">
                 <a href="{{ route("admin.schedule.index") }}" class="nav-link {{ request()->is('admin/schedule') || request()->is('admin/schedule/*') ? 'active' : '' }}">
                     <i class="nav-icon fa-fw fas fa-calendar">
@@ -106,9 +75,9 @@
             </li>
             @endcan
 
-            @can('transaction_access')
+            @can('transaction_view')
                 <li class="nav-item">
-                    <a href="{{ route("admin.transaction") }}" class="nav-link">
+                    <a href="{{ route("admin.schedule.list") }}" class="nav-link">
                     
                         <i class="nav-icon far fa-folder"></i>
                     
@@ -117,7 +86,7 @@
                 </li>
             @endcan
 
-            @can('contact_access')
+            @can('contact_view')
                 <li class="nav-item">
                     <a href="{{ route("admin.contact") }}" class="nav-link">
                     
@@ -127,7 +96,7 @@
                     </a>
                 </li>
             @endcan
-            @can('purpose_access')
+            @can('setting_view')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
                         <i class="fa-fw fas fa-cog nav-icon">
@@ -136,15 +105,42 @@
                         Settings
                     </a>
                     <ul class="nav-dropdown-items">
-                        
+                        @can('purpose_setting')
                             <li class="nav-item">
                                 <a href="{{ route("admin.purposes.index") }}" class="nav-link {{ request()->is('admin/purposes') || request()->is('admin/purposes/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-circle nav-icon">
-
                                     </i>
-                                   General Checkup List
+                                    General Checkup List
                                 </a>
                             </li>
+                        @endcan
+                        @can('announcements_setting')
+                        <li class="nav-item">
+                            <a href="{{ route("admin.announcements.index") }}" class="nav-link {{ request()->is('admin/announcements') || request()->is('admin/announcements/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-circle nav-icon">
+                                </i>
+                               Announcements List
+                            </a>
+                        </li>
+                        @endcan
+                        @can('aboutus_setting')
+                        <li class="nav-item">
+                            <a href="{{ route("admin.aboutus.index") }}" class="nav-link {{ request()->is('admin/aboutus') || request()->is('admin/aboutus/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-circle nav-icon">
+                                </i>
+                               About List
+                            </a>
+                        </li>
+                        @endcan
+                        @can('contacts_setting')
+                        <li class="nav-item">
+                            <a href="{{ route("admin.contacts.index") }}" class="nav-link {{ request()->is('admin/contacts') || request()->is('admin/contacts/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-circle nav-icon">
+                                </i>
+                                Contacts List
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan

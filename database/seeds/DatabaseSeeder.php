@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             PurposeSeeder::class,
+            AnnouncementSeeder::class,
+            AboutUsSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 }

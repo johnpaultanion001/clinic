@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Clinic Name',
+    'site_title' => 'Antipolo Health City Center',
 ];

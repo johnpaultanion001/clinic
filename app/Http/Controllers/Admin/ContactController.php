@@ -1,16 +1,15 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Purpose;
+use App\Contact;
 use Illuminate\Http\Request;
-use Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Gate;
+use Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class PurposeController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +18,9 @@ class PurposeController extends Controller
      */
     public function index(Request $request)
     {
-        abort_if(Gate::denies('purpose_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('contacts_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if ($request->ajax()) {
-            $data = Purpose::all();
+            $data = Contact::all();
 
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
@@ -33,7 +32,7 @@ class PurposeController extends Controller
                 ->make(true);
         }
 
-        return view('admin.purposes.purposes');
+        return view('admin.contacts.contacts');
     }
 
     /**
@@ -54,16 +53,17 @@ class PurposeController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(Gate::denies('purpose_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('contacts_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $errors =  Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255', 'unique:purposes'],
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required'],
         ]);
 
         if ($errors->fails()) {
             return response()->json(['errors' => $errors->errors()]);
         }
 
-        Purpose::create($request->all());
+        Contact::create($request->all());
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -71,10 +71,10 @@ class PurposeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Purpose  $purpose
+     * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function show(Purpose $purpose)
+    public function show(Contact $contact)
     {
         //
     }
@@ -82,15 +82,14 @@ class PurposeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Purpose  $purpose
+     * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(Purpose $purpose)
+    public function edit(Contact $contact)
     {
-        abort_if(Gate::denies('purpose_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('contacts_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if (request()->ajax()) {
-           
-            return response()->json(['result' => $purpose]);
+            return response()->json(['result' => $contact]);
         }
     }
 
@@ -98,14 +97,15 @@ class PurposeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Purpose  $purpose
+     * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Purpose $purpose)
+    public function update(Request $request, Contact $contact)
     {
-        abort_if(Gate::denies('purpose_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('contacts_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $errors =  Validator::make($request->all(), [
-            'name' => ['required', 'unique:purposes'],
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required'],
         ]);
 
         if ($errors->fails()) {
@@ -113,10 +113,11 @@ class PurposeController extends Controller
         }
 
         $credentials = array(
-            'name' => $request->name,
+            'title' => $request->title,
+            'body' => $request->body,
         );
 
-        $purpose->update($credentials);
+        $contact->update($credentials);
 
         return response()->json(['success' => 'Data updated successfully']);
     }
@@ -124,12 +125,12 @@ class PurposeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Purpose  $purpose
+     * @param  \App\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Purpose $purpose)
+    public function destroy(Contact $contact)
     {
-        abort_if(Gate::denies('purpose_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return response()->json(['success' => $purpose->delete()]);
+        abort_if(Gate::denies('contacts_setting'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return response()->json(['success' => $contact->delete()]);
     }
 }

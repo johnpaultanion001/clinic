@@ -74,83 +74,39 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '17',
-                'title' => 'venue_create',
+                'title' => 'about_view',
             ],
             [
                 'id'    => '18',
-                'title' => 'venue_edit',
+                'title' => 'schedule_view',
             ],
             [
                 'id'    => '19',
-                'title' => 'venue_show',
+                'title' => 'contact_view',
             ],
             [
                 'id'    => '20',
-                'title' => 'venue_delete',
+                'title' => 'transaction_view',
             ],
             [
                 'id'    => '21',
-                'title' => 'venue_access',
+                'title' => 'purpose_setting',
             ],
             [
                 'id'    => '22',
-                'title' => 'event_create',
+                'title' => 'announcements_setting',
             ],
             [
                 'id'    => '23',
-                'title' => 'event_edit',
+                'title' => 'aboutus_setting',
             ],
             [
                 'id'    => '24',
-                'title' => 'event_show',
+                'title' => 'contacts_setting',
             ],
             [
                 'id'    => '25',
-                'title' => 'event_delete',
-            ],
-            [
-                'id'    => '26',
-                'title' => 'event_access',
-            ],
-            [
-                'id'    => '27',
-                'title' => 'meeting_create',
-            ],
-            [
-                'id'    => '28',
-                'title' => 'meeting_edit',
-            ],
-            [
-                'id'    => '29',
-                'title' => 'meeting_show',
-            ],
-            [
-                'id'    => '30',
-                'title' => 'meeting_delete',
-            ],
-            [
-                'id'    => '31',
-                'title' => 'meeting_access',
-            ],
-            [
-                'id'    => '32',
-                'title' => 'about_access',
-            ],
-            [
-                'id'    => '33',
-                'title' => 'schedule_access',
-            ],
-            [
-                'id'    => '34',
-                'title' => 'contact_access',
-            ],
-            [
-                'id'    => '35',
-                'title' => 'transaction_access',
-            ],
-            [
-                'id'    => '36',
-                'title' => 'purpose_access',
+                'title' => 'setting_view',
             ],
         ];
 

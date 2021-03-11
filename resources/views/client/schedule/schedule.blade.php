@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <div align="right">
                             <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
-                            <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">List</a>
+                            <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">Trasaction List</a>
                         </div>
                     </div>
                
