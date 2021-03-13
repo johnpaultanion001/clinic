@@ -43,7 +43,7 @@
             </div>
             
             <div class="form-group {{ $errors->has('purpose_id') ? 'has-error' : '' }}">
-                <label class="control-label" >General Checkup: </label>
+                <label class="control-label" >Services: </label>
                     <select name="purpose_id" id="purpose_id" class="form-control select2">
                         <option value="{{$schedule->purpose_id}}" disabled selected>{{$schedule->purpose->name}}</option>
                             @foreach ($purposes as $purpose)

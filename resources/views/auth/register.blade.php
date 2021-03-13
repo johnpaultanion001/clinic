@@ -89,7 +89,7 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password" style="float: right; margin-top: -25px; margin-right: 5px; position: relative; z-index: 2;"></span>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -103,6 +103,7 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field_icon retoggle-password" style="float: right; margin-right: 5px; margin-top: -25px; position: relative; z-index: 2;"></span>
                             </div>
                         </div>
 
@@ -126,5 +127,30 @@
 
 
 <script src="{{ asset('js/main.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+     $("body").on('click', '.toggle-password', function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $("#password");
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+
+        });
+        $("body").on('click', '.retoggle-password', function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $("#password-confirm");
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+
+        });
+
+</script>
+
 
 @stop

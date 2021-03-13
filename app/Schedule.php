@@ -31,17 +31,6 @@ class Schedule extends Model
         'deleted_at',
     ];
 
-    public function getStartTimeAttribute($value)
-    {
-        return $value ? Carbon::createFromFormat('Y-m-d', $value)->format(config('panel.date_format')) : null;
-    }
-
-    public function setStartTimeAttribute($value)
-    {
-        $this->attributes['date_time'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
-        //$this->attributes['time'] = $value ? Carbon::createFromFormat(config('panel.time_format'), $value)->format('H:i') : null;
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

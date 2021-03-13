@@ -45,6 +45,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
      //contacts
     Route::resource('contacts', 'ContactController');
 
+    //holidays
+    Route::resource('holidays', 'HolidayController');
+
+    //fulldates
+    Route::resource('fulldates', 'FullDateController');
+
+   
+
     //client schedule
     Route::resource('schedule', 'ScheduleController');   
     Route::post('schedule-filter',  'ScheduleController@filterbydate')->name('schedule.filterbydate');

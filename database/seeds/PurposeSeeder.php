@@ -15,22 +15,26 @@ class PurposeSeeder extends Seeder
             $purposes = [
                 [
                     'id'             => 1,
-                    'name'           => 'Pre Natal',
+                    'name'           => 'General Check Up',
                 ],
                 [
                     'id'             => 2,
-                    'name'           => 'Maternity',
+                    'name'           => 'Pre Natal',
                 ],
                 [
                     'id'             => 3,
-                    'name'           => 'Dental',
+                    'name'           => 'Maternity',
                 ],
                 [
                     'id'             => 4,
-                    'name'           => 'Ent Checkup',
+                    'name'           => 'Dental',
                 ],
                 [
                     'id'             => 5,
+                    'name'           => 'Ent Checkup',
+                ],
+                [
+                    'id'             => 6,
                     'name'           => 'Pediatric Checkup',
                 ],
             ];

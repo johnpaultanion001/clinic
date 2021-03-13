@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
             AnnouncementSeeder::class,
             AboutUsSeeder::class,
             ContactSeeder::class,
+            HolidaySeeder::class,
+            ScheduleSeeder::class,
+            FullDateSeeder::class,
         ]);
     }
 }

@@ -141,6 +141,24 @@
                             </a>
                         </li>
                         @endcan
+                        @can('holiday_setting')
+                        <li class="nav-item">
+                            <a href="{{ route("admin.holidays.index") }}" class="nav-link {{ request()->is('admin/holidays') || request()->is('admin/holidays/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-circle nav-icon">
+                                </i>
+                                Holidays List
+                            </a>
+                        </li>
+                        @endcan
+                        @can('fulldate_setting')
+                        <li class="nav-item">
+                            <a href="{{ route("admin.fulldates.index") }}" class="nav-link {{ request()->is('admin/fulldates') || request()->is('admin/fulldates/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-circle nav-icon">
+                                </i>
+                                Limit Per Day
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan

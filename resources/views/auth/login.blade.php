@@ -39,6 +39,7 @@
                         </div>
 
                         <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
+                        <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password" style="float: right; margin-left: -25px; margin-top: 10px; position: relative; z-index: 2;"></span>
 
                         @if($errors->has('password'))
                             <div class="invalid-feedback">
@@ -76,3 +77,24 @@
     </div>
 </div>
 @endsection
+
+
+@section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+@parent
+
+<script>
+   
+  $("body").on('click', '.toggle-password', function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $("#password");
+  if (input.attr("type") === "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+
+});
+
+</script>
+@stop

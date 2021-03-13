@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Antipolo Health City Center',
+    'site_title' => 'Antipolo City Health Office',
 ];

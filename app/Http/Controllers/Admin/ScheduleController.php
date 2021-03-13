@@ -7,17 +7,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
+use App\Holiday;
 use App\AvailableDate;
 use App\Schedule;
 use App\Purpose;
+use App\FullDate;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Validator;
 use App\Http\Requests\MassDestroyScheduleRequest;
+use datetime;
 
 class ScheduleController extends Controller
 {
-    public $sources = [
+    public $schedulesources = [
         [
             'model'      => '\\App\\Schedule',
             'date_field' => 'date_time',
@@ -28,22 +31,48 @@ class ScheduleController extends Controller
             'suffix'     => '',
             'route'      => 'admin.schedule.edit',
         ],
-        
+    ];
+    public $holidayssources = [
+        [
+            'model'      => '\\App\\Holiday',
+            'date_holiday' => 'date_holiday',
+            'name'      => 'name',
+        ],
     ];
 
     public function index()
     {
         $events = [];
         $userid = auth()->user()->id;
-
+        $today = new DateTime();
         abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
         if($userrole == 'Admin'){
-            foreach ($this->sources as $source) {
-                 $data = Schedule::where('isCancel', '0')        
-                                   ->get();           
-
-                foreach ($data  as $model) {
+             foreach ($this->schedulesources as $source) {
+                 $schedules = Schedule::where('isCancel', '0')
+                                        ->whereBetween('date_time', [Carbon::now()->subDays(1), "2022-03-12"])
+                                        ->get();              
+                 foreach ($schedules as $model) {
+                     $crudFieldValue = $model->getOriginal($source['date_field']);
+    
+                     if (!$crudFieldValue) {
+                         continue;
+                     }
+    
+                     $events[] = [
+                         'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                         'start' => $crudFieldValue, 
+                         'url'   => route($source['route'], $model->id),
+                         'backgroundColor' => '#008C1F',
+                         'borderColor'    => '#008C1F',
+                     ];
+                 }
+             }
+            foreach ($this->schedulesources as $source) {
+                $schedules = Schedule::where('isCancel', '0')
+                                        ->whereBetween('date_time', ["2019-03-08",Carbon::now()->subDays(1)])
+                                        ->get();              
+                foreach ($schedules as $model) {
                     $crudFieldValue = $model->getOriginal($source['date_field']);
     
                     if (!$crudFieldValue) {
@@ -51,18 +80,39 @@ class ScheduleController extends Controller
                     }
     
                     $events[] = [
-                        'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                        'title' => 'Past Due'.' ' . $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
                         'start' => $crudFieldValue, 
-                        'url'   => route($source['route'], $model->id),
+                        'textColor'    => '#fff',
+                        'backgroundColor' => '#FF0000',
+                        'borderColor'    => '#FF0000',
+                    ];
+                }
+            }
+            foreach ($this->holidayssources as $source) {
+                $data = Holiday::all();
+                foreach ($data as $models) {
+                    $crudFieldValues = $models->getOriginal($source['date_holiday']);
+    
+                    if (!$crudFieldValues) {
+                        continue;
+                    }
+    
+                    $events[] = [
+                        'title' => $models->{$source['name']},
+                        'start' => $crudFieldValues, 
+                        'backgroundColor' => '#FFFF00',
+                        'textColor'    => '#111',
                     ];
                 }
             }
             $purposes = Purpose::all();
             return view('client.schedule.schedule', compact('events','purposes'));
         }
-        foreach ($this->sources as $source) {
+        //Client
+        foreach ($this->schedulesources as $source) {
              $data = Schedule::where('user_id', $userid)
-                            ->where('isCancel', '0')        
+                            ->where('isCancel', '0')
+                            ->whereBetween('date_time', [Carbon::now()->subDays(1), "2022-03-12"])        
                             ->get();            
             foreach ($data  as $model) {
                 $crudFieldValue = $model->getOriginal($source['date_field']);
@@ -74,6 +124,45 @@ class ScheduleController extends Controller
                     'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
                     'start' => $crudFieldValue, 
                     'url'   => route($source['route'], $model->id),
+                ];
+            }
+        }
+        foreach ($this->schedulesources as $source) {
+                
+            $schedules = Schedule::where('isCancel', '0')
+                                 ->where('user_id', $userid)
+                                ->whereBetween('date_time', ["2019-03-08", Carbon::now()->subDays(1)])
+                                ->get();              
+            foreach ($schedules as $model) {
+                $crudFieldValue = $model->getOriginal($source['date_field']);
+
+                if (!$crudFieldValue) {
+                    continue;
+                }
+
+                $events[] = [
+                    'title' => 'Past Due'.' ' . $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                    'start' => $crudFieldValue, 
+                    'textColor'    => '#fff',
+                    'backgroundColor' => '#FF0000',
+                    'borderColor'    => '#FF0000',
+                ];
+            }
+        }
+        foreach ($this->holidayssources as $source) {
+            $data = Holiday::all();
+            foreach ($data as $models) {
+                $crudFieldValues = $models->getOriginal($source['date_holiday']);
+
+                if (!$crudFieldValues) {
+                    continue;
+                }
+
+                $events[] = [
+                    'title' => $models->{$source['name']},
+                    'start' => $crudFieldValues, 
+                    'backgroundColor' => '#FFFF00',
+                    'textColor'    => '#111',
                 ];
             }
         }
@@ -118,10 +207,10 @@ class ScheduleController extends Controller
         $userid = auth()->user()->id;
         $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
         if($userrole == 'Admin'){
-            foreach ($this->sources as $source) {
-
+            foreach ($this->schedulesources as $source) {
                 $filterdate = Schedule::whereBetween('date_time', [$start, $end])
                                         ->where('isCancel', '0')
+                                        ->whereBetween('date_time', [Carbon::now()->subDays(1), "2022-03-12"])
                                         ->get();
                 
                 foreach ($filterdate as $model) {
@@ -138,13 +227,53 @@ class ScheduleController extends Controller
                     ];
                 }
             }
+            foreach ($this->schedulesources as $source) {
+                $schedules = Schedule::where('isCancel', '0')
+                                        ->whereBetween('date_time', [$start, $end])
+                                        ->whereBetween('date_time', ["2019-03-08",Carbon::now()->subDays(1)])
+                                        ->get();              
+                foreach ($schedules as $model) {
+                    $crudFieldValue = $model->getOriginal($source['date_field']);
+    
+                    if (!$crudFieldValue) {
+                        continue;
+                    }
+    
+                    $events[] = [
+                        'title' => 'Past Due'.' ' . $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                        'start' => $crudFieldValue, 
+                        'textColor'    => '#fff',
+                        'backgroundColor' => '#FF0000',
+                        'borderColor'    => '#FF0000',
+                    ];
+                }
+            }
+            foreach ($this->holidayssources as $source) {
+                $data = Holiday::all();
+                foreach ($data as $models) {
+                    $crudFieldValues = $models->getOriginal($source['date_holiday']);
+    
+                    if (!$crudFieldValues) {
+                        continue;
+                    }
+    
+                    $events[] = [
+                        'title' => $models->{$source['name']},
+                        'start' => $crudFieldValues, 
+                        'backgroundColor' => '#FFFF00',
+                        'textColor'    => '#111',
+                    ];
+                }
+            }
             $purposes = Purpose::all();
             return view('client.schedule.schedule', compact('events','purposes'));
          }
-         foreach ($this->sources as $source) {
+         //client
+        foreach ($this->schedulesources as $source) {
             $filterdate = Schedule::whereBetween('date_time', [$start, $end])
-                                    ->where('user_id', $userid)
                                     ->where('isCancel', '0')
+                                    ->where('user_id', $userid)
+                                    ->whereBetween('date_time', [Carbon::now()->subDays(1), "2022-03-12"])
                                     ->get();
             
             foreach ($filterdate as $model) {
@@ -158,6 +287,45 @@ class ScheduleController extends Controller
                     'title' => $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
                     'start' => $crudFieldValue, 
                     'url'   => route($source['route'], $model->id),
+                ];
+            }
+        }
+        foreach ($this->schedulesources as $source) {
+            $schedules = Schedule::where('isCancel', '0')
+                                    ->whereBetween('date_time', [$start, $end])
+                                    ->whereBetween('date_time', ["2019-03-08",Carbon::now()->subDays(1)])
+                                    ->where('user_id', $userid)
+                                    ->get();              
+            foreach ($schedules as $model) {
+                $crudFieldValue = $model->getOriginal($source['date_field']);
+
+                if (!$crudFieldValue) {
+                    continue;
+                }
+
+                $events[] = [
+                    'title' => 'Past Due'.' ' . $model->user->{$source['user']} . "-" .$model->{$source['field']} . " " . $model->purpose->{$source['purpose']},
+                    'start' => $crudFieldValue, 
+                    'textColor'    => '#fff',
+                    'backgroundColor' => '#FF0000',
+                    'borderColor'    => '#FF0000',
+                ];
+            }
+        }
+        foreach ($this->holidayssources as $source) {
+            $data = Holiday::all();
+            foreach ($data as $models) {
+                $crudFieldValues = $models->getOriginal($source['date_holiday']);
+
+                if (!$crudFieldValues) {
+                    continue;
+                }
+
+                $events[] = [
+                    'title' => $models->{$source['name']},
+                    'start' => $crudFieldValues, 
+                    'backgroundColor' => '#FFFF00',
+                    'textColor'    => '#111',
                 ];
             }
         }
@@ -194,11 +362,12 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         abort_if(Gate::denies('schedule_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        try{
+        
             $this->validate($request,[
                 'date_time' => [
                     'date_format:' . config('panel.date_format') ,
                     'required',
+                    'after:yesterday',
                 ],
                 'time' => [
                     'required',
@@ -232,13 +401,19 @@ class ScheduleController extends Controller
                                     ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
                                     ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
                                     ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
+            
+            $holidays = Holiday::select(['date_holiday'])->get()->toArray();
+            $max = FullDate::find(1);
 
             if (in_array($request->time, $notofficetime))
             {
                 return response()->json("notofficehr");
             }
-            
-            if($fulldate > 9){
+            if (in_array(array('date_holiday' => $request->date_time .' 00:00:00'), $holidays))
+            {
+                return response()->json("holidays");
+            }
+            if($fulldate > $max->fulldate -1){
                 return response()->json("maxdate");
             }
             if($onedateuser > 0){
@@ -258,15 +433,8 @@ class ScheduleController extends Controller
             }else{
                 return response()->json(["error"]);
             }
-        }catch (\Throwable $e) {
-            $arr = array(
-                'error' => 'Error, Problem with some code. Try again',
-                'errorMessage' => $e->getMessage()
-            );
-
-            return response()->json($arr);
-        }
     }
+    
 
     /**
      * Display the specified resource.
@@ -332,14 +500,18 @@ class ScheduleController extends Controller
                                 ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
                                 ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
 
-     
+        $holidays = Holiday::select(['date_holiday'])->get()->toArray();
+        $max = FullDate::find(1);
 
         if (in_array($request->time, $notofficetime))
         {
             return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, The Clinic open time are 8:00 AM TO 4:00 PM ');
         }
-        
-        if($fulldate > 9){
+        if (in_array(array('date_holiday' => $request->date_time .' 00:00:00'), $holidays))
+        {
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, Your chosen date is holiday');
+        }
+        if($fulldate > $max->fulldate -1){
             return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, Your chosen date  is full');
         }
         if($onedateuser > 0){

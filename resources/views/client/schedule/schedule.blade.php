@@ -75,9 +75,9 @@
 
                             
                             <div class="form-group">
-                                <label class="control-label" >General Checkup: </label>
+                                <label class="control-label" >Services: </label>
                                 <select name="purpose_id" id="purpose_id" class="form-control select2">
-                                    <option value="" disabled selected>Select Purposes</option>
+                                    <option value="" disabled selected>Select Services</option>
                                     @foreach ($purposes as $purpose)
                                         <option value="{{$purpose->id}}">{{$purpose->name}}</option>
                                     @endforeach
@@ -108,14 +108,12 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(document).ready(function () {
-            // page is now ready, initialize the calendar...
-            events={!! json_encode($events) !!};
-            
+            events={!! json_encode($events) !!}; 
             $('#calendar').fullCalendar({
-                // put your options and callbacks here
                 events: events,
                 selectable: true,
                 selectHelper: true,
+               
                 select: (start, end, allDay) => {
                           var startDate = moment(start),
                           endDate = moment(end),
@@ -142,6 +140,7 @@
                            $('#calendar').fullCalendar('unselect');
                            return false
                             }
+                         
                          document.getElementById("date_time").value = clickdate;
                          $("#exampleModal").modal("show");
                      }
@@ -204,6 +203,10 @@
             else if(data == "onetime"){
                 
                 $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time is not available </div>');
+                form[0].reset();
+            }
+            else if(data == "holidays"){
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date is holiday </div>');
                 form[0].reset();
             }
         },

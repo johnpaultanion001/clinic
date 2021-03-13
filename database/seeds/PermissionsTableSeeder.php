@@ -108,6 +108,14 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => '25',
                 'title' => 'setting_view',
             ],
+            [
+                'id'    => '26',
+                'title' => 'holiday_setting',
+            ],
+            [
+                'id'    => '27',
+                'title' => 'fulldate_setting',
+            ],
         ];
 
         Permission::insert($permissions);
