@@ -2432,7 +2432,7 @@ __webpack_require__.r(__webpack_exports__);
 
   var SWIPE_THRESHOLD = 40;
   var Default = {
-    interval: 5000,
+    interval: 1000,
     keyboard: true,
     slide: false,
     pause: 'hover',

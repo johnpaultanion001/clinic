@@ -96,6 +96,15 @@
                     </a>
                 </li>
             @endcan
+            @can('feedback_setting')
+                <li class="nav-item">
+                    <a href="{{ route("admin.feedbacks.index") }}" class="nav-link">
+                        <i class="nav-icon fas fa-envelope-square"></i>
+                         Feedback
+                    </a>
+                </li>
+            @endcan
+
             @can('setting_view')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">

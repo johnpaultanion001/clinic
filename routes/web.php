@@ -11,6 +11,9 @@ Route::redirect('/', '/home');
   });
 
 Route::get('home', 'HomeController@index')->name('home');
+Route::get('contact', 'HomeController@contact')->name('contact');
+Route::post('contact', 'HomeController@postcontact')->name('feedback');
+Route::get('about', 'HomeController@about')->name('about');
 
 Auth::routes();
 
@@ -50,6 +53,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     //fulldates
     Route::resource('fulldates', 'FullDateController');
+
+    //feedbacks
+    Route::resource('feedbacks', 'FeedbackController');
 
    
 

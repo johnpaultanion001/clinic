@@ -58,7 +58,7 @@
         </button>
 
         <ul class="nav navbar-nav ml-auto">
-        <span class="navbar-brand-full text-primary mr-3 font-weight-bold">{{ trans('panel.site_title') }}</span>
+         
         </ul>
     </header>
 
