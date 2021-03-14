@@ -180,7 +180,7 @@
         success: function(data){
             if(data == "success"){
                 $("#exampleModal").modal("hide");
-                swal("Great", "Successfully Client Data Inserted", "success");
+                swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
                 location.reload();
             }
