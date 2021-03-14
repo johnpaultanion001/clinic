@@ -67,6 +67,9 @@
                           
                                 <a class="btn btn-link px-0" href="/register">
                                     Register Now?
+                                </a>
+                                <a class="btn btn-link px-0" href="/password/reset">
+                                    Forgot Password?
                                 </a><br>
                           
                         </div>
@@ -76,7 +79,7 @@
         </div>
     </div>
 </div>
-<br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
 @endsection
 
 

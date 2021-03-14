@@ -24,15 +24,18 @@
                     </div>
                     <div class="form-group">
                         <input id="password" type="password" name="password" class="form-control" required placeholder="{{ trans('global.login_password') }}">
-
+                        <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password" style="float: right; margin-left: 15px; margin-top: -25px; position: relative; z-index: 2;"></span>
                         @if($errors->has('password'))
-                            <div class="invalid-feedback">
+                            <div class="invalid-feedback" role="alert">
                                 {{ $errors->first('password') }}
                             </div>
                         @endif
+
+                        
                     </div>
                     <div class="form-group">
                         <input id="password-confirm" type="password" name="password_confirmation" class="form-control" required placeholder="{{ trans('global.login_password_confirmation') }}">
+                        <span toggle="#password-field" class="fa fa-fw fa-eye field_icon retoggle-password" style="float: right; margin-left: 15px; margin-top: -25px; position: relative; z-index: 2;"></span>
                     </div>
 
                     <div class="row">
@@ -47,4 +50,36 @@
         </div>
     </div>
 </div>
+<br><br><br><br><br><br><br><br>
 @endsection
+
+@section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+@parent
+
+<script>
+   
+  $("body").on('click', '.toggle-password', function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $("#password");
+  if (input.attr("type") === "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+
+});
+
+$("body").on('click', '.retoggle-password', function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $("#password-confirm");
+  if (input.attr("type") === "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+
+});
+
+</script>
+@stop

@@ -22,6 +22,7 @@
     <style>
         #sticky-footer {
             flex-shrink: none;
+            
             }
                 
             

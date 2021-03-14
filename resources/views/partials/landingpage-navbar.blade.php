@@ -7,7 +7,7 @@ color: #111;
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <a class="navbar-brand" href="/"> 
-    <img src="img/logo.png" alt="Logo" style="width:40px;">
+    <img src="/img/logo.png" alt="Logo" style="width:40px;">
     <span>{{ trans('panel.site_title') }}</span>
   </a>
   
