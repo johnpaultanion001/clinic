@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="col-10">
                                     <h5 class="card-title text-uppercase">Hi, {{Auth::user()->name}}</h5>
-                                    <a href=""><h6 class="text-primary">More info.</h6></a>
+                                    <a href="{{ route('admin.user-client.edit', auth()->user()->id) }}"><h6 class="text-primary">More info.</h6></a>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                                     <i class="far fa-calendar fa-2x"></i>
                                 </div>
                                 <div class="col-10">
-                                    <h5 class="card-title text-uppercase">You have schedule today</h5>
+                                    <h5 class="card-title text-uppercase">Check if you have schedule</h5>
                                     <a href="{{ route("admin.schedule.index") }}"><h6 class="text-primary">More info.</h6></a>
                                 </div>
                             </div>

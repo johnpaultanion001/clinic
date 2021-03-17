@@ -83,6 +83,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="date_timeT">Purpose : </label>
+                                <textarea id="purpose" name="purpose" class="form-control" placeholder="Enter a purpose"  required ></textarea> 
+                            </div>
                             
                             <input class="btn btn-success" type="submit" value="Submit">
                             <input type="hidden" name="_token" id="csrftoken" value="{{ csrf_token() }}">
@@ -96,6 +100,25 @@
         </div>
 
     </div>
+
+    <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    View your transaction here
+                    <a href="{{ route("admin.schedule.list") }}" >Transaction</a>
+                </div>
+                <div class="modal-footer showError">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -108,11 +131,13 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(document).ready(function () {
+       
             events={!! json_encode($events) !!}; 
             $('#calendar').fullCalendar({
                 events: events,
                 selectable: true,
                 selectHelper: true,
+               
                
                 select: (start, end, allDay) => {
                           var startDate = moment(start),
@@ -140,7 +165,12 @@
                            $('#calendar').fullCalendar('unselect');
                            return false
                             }
-                         
+                       else if(clickdate == today){
+                             alert("You can`t make schedule today");
+                             $('#calendar').fullCalendar('unselect');
+                             return false
+                             }
+                            
                          document.getElementById("date_time").value = clickdate;
                          $("#exampleModal").modal("show");
                      }
@@ -182,7 +212,10 @@
                 $("#exampleModal").modal("hide");
                 swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
-                location.reload();
+                $("#transactionModal").modal("show");
+                setTimeout(function(){
+                    location.reload();
+                    }, 5000);
             }
             else if(data == "maxdate"){
                 
@@ -209,6 +242,10 @@
                 $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date is holiday </div>');
                 form[0].reset();
             }
+            else if(data == "today"){
+                $('#form_result').html('<div class="alert alert-danger">Error, You can`t make schedule today</div>');
+                form[0].reset();
+            }
         },
 
         error: function(xhr, XMLHttpRequest, textStatus, errorThrown) {
@@ -218,6 +255,7 @@
 
         complete: function(){
 				$(".load").fadeOut();
+               
 			},
         });
 

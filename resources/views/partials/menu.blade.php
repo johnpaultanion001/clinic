@@ -105,6 +105,25 @@
                 </li>
             @endcan
 
+            @can('scheduledlist_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.scheduled-list.index") }}" class="nav-link {{ request()->is('admin/scheduled-list') || request()->is('admin/scheduled-list/*') ? 'active' : '' }}">
+                    <i class="nav-icon fa-fw fas fa-calendar">
+                    </i>    
+                            Scheduled List
+                    </a>
+                </li>
+            @endcan
+
+            @can('history_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.histories.index") }}" class="nav-link {{ request()->is('admin/histories') || request()->is('admin/historiest/*') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-folder"></i>
+                            Histories List
+                    </a>
+                </li>
+            @endcan
+
             @can('setting_view')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
@@ -171,6 +190,13 @@
                     </ul>
                 </li>
             @endcan
+            <li class="nav-item">
+                    <a href="{{ route('admin.user-client.edit', auth()->user()->id) }}" class="nav-link {{ request()->is('admin/user-client') || request()->is('admin/user-client/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user"></i>
+                            User
+                    </a>
+            </li>
+
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">

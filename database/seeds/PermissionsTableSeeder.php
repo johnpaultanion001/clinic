@@ -120,6 +120,14 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => '28',
                 'title' => 'feedback_setting',
             ],
+            [
+                'id'    => '29',
+                'title' => 'history_access',
+            ],
+            [
+                'id'    => '30',
+                'title' => 'scheduledlist_access',
+            ],
         ];
 
         Permission::insert($permissions);

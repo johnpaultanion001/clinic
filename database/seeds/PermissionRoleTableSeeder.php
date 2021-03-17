@@ -16,7 +16,8 @@ class PermissionRoleTableSeeder extends Seeder
             && substr($permission->title, 0, 14) != 'announcements_'   && substr($permission->title, 0, 9) != 'contacts_'
             && substr($permission->title, 0, 8) != 'purpose_' && substr($permission->title, 0, 8) != 'setting_'
             && substr($permission->title, 0, 8) != 'holiday_' && substr($permission->title, 0, 9) != 'fulldate_'
-            && substr($permission->title, 0, 9) != 'feedback_';
+            && substr($permission->title, 0, 9) != 'feedback_' && substr($permission->title, 0, 8) != 'history_'
+            && substr($permission->title, 0, 14) != 'scheduledlist_'; 
         });
         Role::findOrFail(2)->permissions()->sync($user_permissions);
     }

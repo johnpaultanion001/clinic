@@ -25,10 +25,16 @@
                                  Purpose
                             </th>
                             <th>
+                                 Additional Purpose
+                            </th>
+                            <th>
                                  Created At
                             </th>
                             <th>
                                  Scheduled By
+                            </th>
+                            <th>
+                                 Reference Number
                             </th>
                             
                             <th>
@@ -53,10 +59,16 @@
                                     {{ $schedule->purpose->name ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $schedule->purpose_text ?? '' }}
+                                </td>
+                                <td>
                                     {{ $schedule->created_at ?? '' }}
                                 </td>
                                 <td>
                                     {{ $schedule->user->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $schedule->reference_number ?? '' }}
                                 </td>
                                 <td>
                                        <a class="btn btn-xs btn-info" href="{{ route('admin.schedule.edit', $schedule->id) }}">

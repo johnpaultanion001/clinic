@@ -373,6 +373,7 @@ class ScheduleController extends Controller
                     'required',
                 ],
                 'purpose_id' => 'required',
+                'purpose' => 'required',
 
             ]);
             $userid = auth()->user()->id;
@@ -397,8 +398,8 @@ class ScheduleController extends Controller
             $notofficetime = array("12:00 AM", "12:20 AM", "12:40 AM", "1:00 AM","1:20 AM","1:40 AM"
                                     ,"2:00 AM","2:20 AM","2:40 AM","3:00 AM","3:20 AM","3:40 AM","4:00 AM"
                                     ,"4:20 AM","4:40 AM","5:00 AM","5:20 AM","5:40 AM","6:00 AM","6:20 AM"
-                                    ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM","4:00 PM","4:20 PM","4:40 PM"
-                                    ,"5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
+                                    ,"6:40 AM","7:00 AM","7:20 AM","7:40 AM",
+                                    "5:00 PM","5:20 PM","5:40 PM","6:00 PM","6:20 PM","6:40 PM","7:00 PM"
                                     ,"7:20 PM","7:40 PM","8:00 PM","8:20 PM","8:40 PM","9:00 PM","9:20 PM"
                                     ,"9:40 PM","10:00 PM","10:20 PM","10:40 PM","11:00 PM","11:20 PM","11:40 PM"); 
             
@@ -422,10 +423,18 @@ class ScheduleController extends Controller
             if($onedatebytime > 0){
                 return response()->json("onetime");
             }
+            date_default_timezone_set('Asia/Manila');
+            if($request->date_time == date('Y-m-d')){
+                return response()->json("today");
+            }
             $schedule->user_id = $userid;
             $schedule->date_time = $request->date_time;
             $schedule->time = $request->time;
             $schedule->purpose_id = $request->purpose_id;
+            $schedule->purpose_text = $request->purpose;
+            $schedule->reference_number = time().'-'.$userid;
+            
+            
             $schedule->save();
 
             if($schedule){
@@ -479,6 +488,7 @@ class ScheduleController extends Controller
                 'required',
             ],
             'purpose_id' => 'required',
+            'purpose' => 'required',
 
         ]);
         $userid = auth()->user()->id;
@@ -520,12 +530,17 @@ class ScheduleController extends Controller
         if($onedatebytime > 0){
             return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, Your chosen time is not available');
         }
+        date_default_timezone_set('Asia/Manila');
+        if($request->date_time == date('Y-m-d')){
+            return redirect('admin/schedule/'.$schedule->id.'/edit')->with('error', 'Error, You can`t make schedule today');
+        }
        
 
         //$schedule->user_id = $userid;
         $schedule->date_time = $request->date_time;
         $schedule->time = $request->time;
         $schedule->purpose_id = $request->purpose_id;
+        $schedule->purpose_text = $request->purpose;
         $schedule->save();
 
         if($schedule){

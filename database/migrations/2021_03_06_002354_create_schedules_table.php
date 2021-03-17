@@ -20,6 +20,8 @@ class CreateSchedulesTable extends Migration
             $table->string('time');
             $table->string('purpose_id');
             $table->string('isCancel')->default('0');
+            $table->text('purpose_text')->nullable();
+            $table->string('reference_number')->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
         });

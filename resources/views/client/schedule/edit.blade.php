@@ -45,7 +45,7 @@
             <div class="form-group {{ $errors->has('purpose_id') ? 'has-error' : '' }}">
                 <label class="control-label" >Services: </label>
                     <select name="purpose_id" id="purpose_id" class="form-control select2">
-                        <option value="{{$schedule->purpose_id}}" disabled selected>{{$schedule->purpose->name}}</option>
+                        <option value="{{$schedule->purpose_id}}" readonly selected>{{$schedule->purpose->name}}</option>
                             @foreach ($purposes as $purpose)
                                 <option value="{{$purpose->id}}">{{$purpose->name}}</option>
                             @endforeach
@@ -55,6 +55,17 @@
                             {{ $errors->first('purpose_id') }}
                         </em>
                     @endif
+            </div>
+
+
+            <div class="form-group {{ $errors->has('purpose') ? 'has-error' : '' }}">
+                <label for="purpose">Additional Purpose:</label>
+                <textarea id="purpose" name="purpose" class="form-control" autocomplete="off" >{{$schedule->purpose_text}}</textarea>
+                @if($errors->has('purpose'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('purpose') }}
+                    </em>
+                @endif
             </div>
             
             

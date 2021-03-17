@@ -12,6 +12,8 @@ class ScheduleSeeder extends Seeder
      */
     public function run()
     {
+        date_default_timezone_set('Asia/Manila');
+        $datetoday = date('Y-m-d');  
         $schedules = [
             [
                 'id'             => 1,
@@ -20,6 +22,10 @@ class ScheduleSeeder extends Seeder
                 'time'        => '9:40 AM',
                 'purpose_id'          => 2,
                 'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000001-1',
+                'isCancel'           => '2',
+                
             ],
             [
                 'id'             => 2,
@@ -28,6 +34,9 @@ class ScheduleSeeder extends Seeder
                 'time'        => '8:40 AM',
                 'purpose_id'     => 1,
                 'isCancel'       => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000002-2',
+                'isCancel'           => '2',
             ],
             [
                 'id'             => 3,
@@ -36,6 +45,9 @@ class ScheduleSeeder extends Seeder
                 'time'        => '4:40 PM',
                 'purpose_id'          => 3,
                 'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000003-2',
+                'isCancel'           => '2',
             ],
             [
                 'id'             => 4,
@@ -44,6 +56,9 @@ class ScheduleSeeder extends Seeder
                 'time'        => '3:40 PM',
                 'purpose_id'          => 4,
                 'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000004-2',
+                'isCancel'           => '2',
             ],
             [
                 'id'             => 5,
@@ -52,6 +67,9 @@ class ScheduleSeeder extends Seeder
                 'time'        => '2:40 PM',
                 'purpose_id'          => 5,
                 'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000005-1',
+                'isCancel'           => '1',
             ],
             [
                 'id'             => 6,
@@ -59,6 +77,31 @@ class ScheduleSeeder extends Seeder
                 'date_time'      => '2021-03-25',
                 'time'        => '1:40 PM',
                 'purpose_id'          => 4,
+                'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000006-1',
+                'isCancel'           => '0',
+            ],
+            [
+                'id'             => 7,
+                'user_id'        => 3,
+                'date_time'      => $datetoday,
+                'time'        => '1:40 PM',
+                'purpose_id'          => 4,
+                'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000007-3',
+                'isCancel'           => '0',
+            ],
+            [
+                'id'             => 8,
+                'user_id'        => 4,
+                'date_time'      => $datetoday,
+                'time'        => '1:40 PM',
+                'purpose_id'          => 4,
+                'isCancel'           => '0',
+                'purpose_text'           => 'text Sample',
+                'reference_number'           => '00000008-4',
                 'isCancel'           => '0',
             ],
            
