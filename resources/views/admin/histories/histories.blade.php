@@ -12,7 +12,7 @@
                                     <div class="row">
                                         <div class="col-md-7">
                                             <div class="form-group">
-                                                <small>Filter by date: / Past date</small>
+                                                <small>Filter by date: / Specific Past date</small>
                                                 <input type="text" id="date" name="date" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
                                             </div>
                                         </div>
@@ -39,7 +39,13 @@
                             <th width="10">
                             </th>
                             <th>
+                                Reference Number
+                            </th>
+                            <th>
                                 Client Name
+                            </th>
+                            <th>
+                                Service
                             </th>
                             <th>
                                 Purpose
@@ -53,9 +59,6 @@
                             <th>
                                  Status
                             </th>
-                            <th>
-                                 Date Created
-                            </th>
                             
                         </tr>
                     </thead>
@@ -67,10 +70,17 @@
                                 </td>
                                 
                                 <td>
+                                    {{ $history->reference_number ?? '' }}
+                                </td>
+                                
+                                <td>
                                     {{ $history->user->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $history->purpose->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $history->purpose_text ?? '' }}
                                 </td>
                                 <td>
                                     {{ $history->time ?? '' }}
@@ -80,15 +90,12 @@
                                 </td>
                                 <td>
                                     @if ($history->isCancel == 0)
-                                        On Process
+                                    <center><p style="border-bottom: 2px yellow solid">On Process</p> </center>
                                     @elseif ($history->isCancel == 1)
-                                        Cancel
+                                    <center><p style="border-bottom: 2px red solid">Cancel</p></center>
                                     @elseif ($history->isCancel == 2)
-                                        Done
+                                    <center> <p style="border-bottom: 2px green solid">Done</p></center>
                                     @endif
-                                </td>
-                                <td>
-                                    {{ $history->created_at ?? '' }}
                                 </td>
                                
                             </tr>
@@ -108,6 +115,37 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+
+  @can('setting_view')
+        let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+        let deleteButton = {
+        text: deleteButtonTrans,
+        url: "{{ route('admin.histories.massDestroy') }}",
+        className: 'btn-danger',
+        action: function (e, dt, node, config) {
+            var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                return $(entry).data('entry-id')
+            });
+
+            if (ids.length === 0) {
+            alert('{{ trans('global.datatables.zero_selected') }}')
+
+            return
+            }
+
+            if (confirm('{{ trans('global.areYouSure') }}')) {
+            $.ajax({
+                headers: {'x-csrf-token': _token},
+                method: 'POST',
+                url: config.url,
+                data: { ids: ids, _method: 'DELETE' }})
+                .done(function () { location.reload() })
+            }
+        }
+        }
+        dtButtons.push(deleteButton)
+ @endcan
+
   $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 1, 'desc' ]],
     pageLength: 100,

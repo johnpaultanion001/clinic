@@ -149,9 +149,16 @@
                             })
                         }
                         if(data.success){
-                            html = '<div class="alert alert-success">' + data.success + '</div>';
+                            //html = '<div class="alert alert-success">' + data.success + '</div>';
                             $('.form-control').removeClass('is-invalid')
                             $('#myForm')[0].reset();
+                            $('#formModal').modal('hide');
+                           
+                            $.alert({
+                                title: 'success',
+                                content: data.success,
+                                type: 'green',
+                                })
                             $('#table').DataTable().ajax.reload();
                         }
                         $('#form_result').html(html);

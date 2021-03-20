@@ -35,5 +35,16 @@ class HistoryController extends Controller
                             ->get();  
         return view('admin.histories.histories', compact('historys'));
     }
+
+    public function massDestroy(Request $request)
+    {
+        $this->validate($request,[
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:schedules,id',
+           ]);
+
+        Schedule::whereIn('id', request('ids'))->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
     
 }

@@ -39,7 +39,13 @@
                             <th width="10">
                             </th>
                             <th>
+                                Reference Number
+                            </th>
+                            <th>
                                 Client Name
+                            </th>
+                            <th>
+                                Service
                             </th>
                             <th>
                                 Purpose
@@ -54,7 +60,7 @@
                                  Status
                             </th>
                             <th>
-                                &nbsp;
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -64,12 +70,18 @@
                                 <td>
 
                                 </td>
+                                <td>
+                                    {{ $history->reference_number ?? '' }}
+                                </td>
                                 
                                 <td>
                                     {{ $history->user->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $history->purpose->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $history->purpose_text ?? '' }}
                                 </td>
                                 <td>
                                     {{ $history->time ?? '' }}
@@ -79,11 +91,11 @@
                                 </td>
                                 <td>
                                     @if ($history->isCancel == 0)
-                                        On Process
+                                    <center><p style="border-bottom: 2px yellow solid">On Process</p> </center>
                                     @elseif ($history->isCancel == 1)
-                                        Cancel
+                                        <p style="border-bottom: 2px red solid">Cancel</p>
                                     @elseif ($history->isCancel == 2)
-                                        Done
+                                         <p style="border-bottom: 2px green solid">Done</p>
                                     @endif
                                 </td>
                                 <td>

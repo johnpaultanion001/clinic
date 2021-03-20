@@ -22,88 +22,6 @@
                     </a>
                 </li>
             @endcan
-            @can('user_management_access')
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link  nav-dropdown-toggle" href="#">
-                        <i class="fa-fw fas fa-users nav-icon">
-
-                        </i>
-                        {{ trans('cruds.userManagement.title') }}
-                    </a>
-                    <ul class="nav-dropdown-items">
-                        @can('permission_access')
-                            <li class="nav-item">
-                                <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is('admin/permissions') || request()->is('admin/permissions/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-unlock-alt nav-icon">
-
-                                    </i>
-                                    {{ trans('cruds.permission.title') }}
-                                </a>
-                            </li>
-                        @endcan
-                        @can('role_access')
-                            <li class="nav-item">
-                                <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is('admin/roles') || request()->is('admin/roles/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-briefcase nav-icon">
-
-                                    </i>
-                                    {{ trans('cruds.role.title') }}
-                                </a>
-                            </li>
-                        @endcan
-                        @can('user_access')
-                            <li class="nav-item">
-                                <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-user nav-icon">
-
-                                    </i>
-                                    {{ trans('cruds.user.title') }}
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
-            @endcan
-            @can('schedule_view')
-            <li class="nav-item">
-                <a href="{{ route("admin.schedule.index") }}" class="nav-link {{ request()->is('admin/schedule') || request()->is('admin/schedule/*') ? 'active' : '' }}">
-                    <i class="nav-icon fa-fw fas fa-calendar">
-
-                    </i>
-                    {{ trans('global.schedule') }}
-                </a>
-            </li>
-            @endcan
-
-            @can('transaction_view')
-                <li class="nav-item">
-                    <a href="{{ route("admin.schedule.list") }}" class="nav-link">
-                    
-                        <i class="nav-icon far fa-folder"></i>
-                    
-                        {{ trans('global.transaction') }}
-                    </a>
-                </li>
-            @endcan
-
-            @can('contact_view')
-                <li class="nav-item">
-                    <a href="{{ route("admin.contact") }}" class="nav-link">
-                    
-                        <i class="nav-icon far fa-address-book"></i>
-                    
-                        {{ trans('global.contact') }}
-                    </a>
-                </li>
-            @endcan
-            @can('feedback_setting')
-                <li class="nav-item">
-                    <a href="{{ route("admin.feedbacks.index") }}" class="nav-link">
-                        <i class="nav-icon fas fa-envelope-square"></i>
-                         Feedback
-                    </a>
-                </li>
-            @endcan
 
             @can('scheduledlist_access')
                 <li class="nav-item">
@@ -120,6 +38,50 @@
                     <a href="{{ route("admin.histories.index") }}" class="nav-link {{ request()->is('admin/histories') || request()->is('admin/historiest/*') ? 'active' : '' }}">
                       <i class="nav-icon far fa-folder"></i>
                             Histories List
+                    </a>
+                </li>
+            @endcan
+            
+            @can('transaction_view')
+                <li class="nav-item">
+                    <a href="{{ route("admin.schedule.list") }}" class="nav-link">
+                    
+                        <i class="nav-icon far fa-folder"></i>
+                    
+                        {{ trans('global.transaction') }}
+                    </a>
+                </li>
+            @endcan
+
+            @can('schedule_view')
+            <li class="nav-item">
+                <a href="{{ route("admin.schedule.index") }}" class="nav-link {{ request()->is('admin/schedule') || request()->is('admin/schedule/*') ? 'active' : '' }}">
+                    <i class="nav-icon fa-fw fas fa-calendar">
+
+                    </i>
+                    {{ trans('global.schedule') }}
+                </a>
+            </li>
+            @endcan
+
+            
+
+            @can('contact_view')
+                <li class="nav-item">
+                    <a href="{{ route("admin.contact") }}" class="nav-link">
+                    
+                        <i class="nav-icon far fa-address-book"></i>
+                    
+                        {{ trans('global.contact') }}
+                    </a>
+                </li>
+            @endcan
+            
+            @can('feedback_setting')
+                <li class="nav-item">
+                    <a href="{{ route("admin.feedbacks.index") }}" class="nav-link">
+                        <i class="nav-icon fas fa-envelope-square"></i>
+                         Feedback
                     </a>
                 </li>
             @endcan
@@ -190,6 +152,7 @@
                     </ul>
                 </li>
             @endcan
+
             <li class="nav-item">
                     <a href="{{ route('admin.user-client.edit', auth()->user()->id) }}" class="nav-link {{ request()->is('admin/user-client') || request()->is('admin/user-client/*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
@@ -197,6 +160,50 @@
                     </a>
             </li>
 
+
+            @can('user_management_access')
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        <i class="fa-fw fas fa-users nav-icon">
+
+                        </i>
+                        {{ trans('cruds.userManagement.title') }}
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        @can('permission_access')
+                            <li class="nav-item">
+                                <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is('admin/permissions') || request()->is('admin/permissions/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-unlock-alt nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.permission.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('role_access')
+                            <li class="nav-item">
+                                <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is('admin/roles') || request()->is('admin/roles/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-briefcase nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.role.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('user_access')
+                            <li class="nav-item">
+                                <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-user nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.user.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
+           
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">

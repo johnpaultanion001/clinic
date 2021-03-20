@@ -65,23 +65,42 @@
             </div>
 
         
-
-            <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-                <label for="password">{{ trans('cruds.user.fields.password') }}</label>
-                <input type="password" id="password" name="password" class="form-control">
-                <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password" style="float: right; margin-left: -25px; margin-top: -25px; position: relative; z-index: 2;"></span>
-                @if($errors->has('password'))
+            <div class="form-group {{ $errors->has('current_password') ? 'has-error' : '' }}">
+                <label for="current_password">Current Password</label>
+                <input type="password" id="current_password" name="current_password" class="form-control">
+                <span toggle="#current_password-field" class="fa fa-fw fa-eye field_icon toggle-current_password" style="float: right; margin-left: -25px; margin-top: -25px; position: relative; z-index: 2;"></span>
+                @if($errors->has('current_password'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('password') }}
+                        {{ $errors->first('current_password') }}
                     </em>
                 @endif
-                <p class="helper-block">
-                    {{ trans('cruds.user.fields.password_helper') }}
-                </p>
+               
+            </div>
+
+            <div class="form-group {{ $errors->has('new_password') ? 'has-error' : '' }}">
+                <label for="new_password">New Password</label>
+                <input type="password" id="new_password" name="new_password" class="form-control">
+                <span toggle="#new_password-field" class="fa fa-fw fa-eye field_icon toggle-new_password" style="float: right; margin-left: -25px; margin-top: -25px; position: relative; z-index: 2;"></span>
+                @if($errors->has('new_password'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('new_password') }}
+                    </em>
+                @endif
+            </div>
+
+            <div class="form-group {{ $errors->has('confirm_password') ? 'has-error' : '' }}">
+                <label for="confirm_password">Confirm New Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control">
+                <span toggle="#confirm_password-field" class="fa fa-fw fa-eye field_icon toggle-confirm_password" style="float: right; margin-left: -25px; margin-top: -25px; position: relative; z-index: 2;"></span>
+                @if($errors->has('confirm_password'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('confirm_password') }}
+                    </em>
+                @endif
             </div>
            
-            <div>
-                <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">
+            <div class="col-6 mx-auto">
+                <input class="btn btn-info form-control " type="submit" value="{{ trans('global.save') }}">
             </div>
         </form>
 
@@ -96,16 +115,36 @@
 
 <script>
    
-  $("body").on('click', '.toggle-password', function() {
-  $(this).toggleClass("fa-eye fa-eye-slash");
-  var input = $("#password");
-  if (input.attr("type") === "password") {
+$("body").on('click', '.toggle-current_password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#current_password");
+    if (input.attr("type") === "password") {
     input.attr("type", "text");
-  } else {
+    } else {
     input.attr("type", "password");
-  }
-
+    }
 });
+
+$("body").on('click', '.toggle-new_password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#new_password");
+    if (input.attr("type") === "password") {
+    input.attr("type", "text");
+    } else {
+    input.attr("type", "password");
+    }
+});
+
+$("body").on('click', '.toggle-confirm_password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#confirm_password");
+    if (input.attr("type") === "password") {
+    input.attr("type", "text");
+    } else {
+    input.attr("type", "password");
+    }
+});
+
 
 </script>
 @stop

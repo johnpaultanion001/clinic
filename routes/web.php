@@ -62,7 +62,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     //client schedule
     Route::resource('schedule', 'ScheduleController');   
     Route::post('schedule-filter',  'ScheduleController@filterbydate')->name('schedule.filterbydate');
+
+    //transaction
     Route::get('transaction',  'ScheduleController@list')->name('schedule.list');
+    Route::post('transaction-filter',  'ScheduleController@filtertrasaction')->name('transaction.filterbydatetransaction');
+
+
     Route::put('schedule-cancel/{id}',  'ScheduleController@cancel')->name('schedule.cancel');
     Route::delete('schedules/destroy', 'ScheduleController@massDestroy')->name('schedule.massDestroy');
     Route::get('errordata/{error}', 'ScheduleController@errordata');
@@ -70,6 +75,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     //History 
     Route::get('histories', 'HistoryController@index')->name('histories.index');
     Route::post('histories-filter',  'HistoryController@filterbydate')->name('histories.filterbydate');
+    Route::delete('histories/destroy', 'HistoryController@massDestroy')->name('histories.massDestroy');
+
 
     //Scheduled List 
     Route::resource('scheduled-list', 'ScheduledListController');

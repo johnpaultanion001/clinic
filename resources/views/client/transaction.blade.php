@@ -3,9 +3,41 @@
     <div class="card">
         <div class="card-header">
             <h4>Transaction List</h4>
-            <div align="right">
-            <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
+            <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                        <form action="{{ route("admin.transaction.filterbydatetransaction") }}" method="post" enctype="multipart/form-data">
+                            {!! csrf_field() !!}
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <small>From : </small>
+                                                <input type="text" id="date_from" name="date_from" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <small>To : </small>
+                                                <input type="text" id="date_to" name="date_to" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        <br>
+                                             <input class=" form-group btn btn-info" type="submit" value="Filter">  
+                                        </div>
+                                    </div>
+                                </div>                            
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div align="right">
+                            <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
+                        </div>
+                    </div>
+               
             </div>
+        </div>
         </div>
 
         <div class="card-body">
@@ -16,29 +48,31 @@
                             <th width="10">
                             </th>
                             <th>
-                                Date Scheduled
-                            </th>
-                            <th>
-                                Time
-                            </th>
-                            <th>
-                                 Purpose
-                            </th>
-                            <th>
-                                 Additional Purpose
-                            </th>
-                            <th>
-                                 Created At
+                                Reference Number
                             </th>
                             <th>
                                  Scheduled By
                             </th>
                             <th>
-                                 Reference Number
+                                 Service
                             </th>
-                            
                             <th>
-                                &nbsp;
+                                 Purpose
+                            </th>
+                            <th>
+                                Time
+                            </th>
+                            <th>
+                                Date Scheduled
+                            </th>
+                            <th>
+                                 Created At
+                            </th>
+                            <th>
+                                 Status
+                            </th>
+                            <th>
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -48,12 +82,11 @@
                                 <td>
 
                                 </td>
-                                
                                 <td>
-                                    {{ $schedule->date_time->format('Y-m-d') ?? '' }}
+                                    {{ $schedule->reference_number ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $schedule->time ?? '' }}
+                                    {{ $schedule->user->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $schedule->purpose->name ?? '' }}
@@ -62,18 +95,30 @@
                                     {{ $schedule->purpose_text ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $schedule->time ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $schedule->date_time->format('Y-m-d') ?? '' }}
+                                </td>
+                                <td>
                                     {{ $schedule->created_at ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $schedule->user->name ?? '' }}
+                                    @if ($schedule->isCancel == 0)
+                                    <center><p style="border-bottom: 2px yellow solid">On Process</p> </center>
+                                    @elseif ($schedule->isCancel == 1)
+                                    <center><p style="border-bottom: 2px red solid">Cancel</p></center>
+                                    @elseif ($schedule->isCancel == 2)
+                                    <center> <p style="border-bottom: 2px green solid">Done</p></center>
+                                    @endif
                                 </td>
                                 <td>
-                                    {{ $schedule->reference_number ?? '' }}
-                                </td>
-                                <td>
-                                       <a class="btn btn-xs btn-info" href="{{ route('admin.schedule.edit', $schedule->id) }}">
+                                        @if ($schedule->isCancel == 0)
+                                        <a class="btn  btn-info " href="{{ route('admin.schedule.edit', $schedule->id) }}">
                                             {{ trans('global.edit') }}
-                                        </a>     
+                                        </a> 
+                                        @endif
+                                           
                                 </td>
                             </tr>
                         @endforeach
@@ -100,24 +145,29 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label for="date_timeL">Date And Time: </label>
-                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose Date And Time" required autocomplete="false" /> 
+                                <label for="date_timeL">Date : </label>
+                                <input type="text" id="date_time" name="date_time" class="form-control date" placeholder="Choose a Date" autocomplete="off" required /> 
                             </div>
+
                             <div class="form-group">
-                                <label for="date_timeL">Time: </label>
-                                <input type="text" id="time" name="time" class="form-control timepicker" placeholder="Choose Date And Time" required autocomplete="false" /> 
+                                <label for="date_timeT">Time : </label>
+                                <input type="text" id="time" name="time" class="form-control timepicker" placeholder="Choose a Time" autocomplete="off" required /> 
                             </div>
+
+                            
                             <div class="form-group">
-                                <label class="control-label" >General Checkup: </label>
+                                <label class="control-label" >Services: </label>
                                 <select name="purpose_id" id="purpose_id" class="form-control select2">
-                                    <option value="" disabled selected>Select Purposes</option>
+                                    <option value="" disabled selected>Select Services</option>
                                     @foreach ($purposes as $purpose)
                                         <option value="{{$purpose->id}}">{{$purpose->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-
-                           
+                            <div class="form-group">
+                                <label for="date_timeT">Purpose : </label>
+                                <textarea id="purpose" name="purpose" class="form-control" placeholder="Enter a purpose"  required ></textarea> 
+                            </div>
                             
                             <input class="btn btn-success" type="submit" value="Submit">
                             <input type="hidden" name="_token" id="csrftoken" value="{{ csrf_token() }}">
@@ -136,6 +186,39 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+ 
+  //delete by selected
+  @can('setting_view')
+        let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+        let deleteButton = {
+        text: deleteButtonTrans,
+        url: "{{ route('admin.schedule.massDestroy') }}",
+        className: 'btn-danger',
+        action: function (e, dt, node, config) {
+            var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                return $(entry).data('entry-id')
+            });
+
+            if (ids.length === 0) {
+            alert('{{ trans('global.datatables.zero_selected') }}')
+
+            return
+            }
+
+            if (confirm('{{ trans('global.areYouSure') }}')) {
+            $.ajax({
+                headers: {'x-csrf-token': _token},
+                method: 'POST',
+                url: config.url,
+                data: { ids: ids, _method: 'DELETE' }})
+                .done(function () { location.reload() })
+            }
+        }
+        }
+        dtButtons.push(deleteButton)
+ @endcan
+  //delete by selected
+
   $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 1, 'desc' ]],
     pageLength: 100,
@@ -165,9 +248,41 @@ $('#form-submit').on('submit',function(event) {
         success: function(data){
             if(data == "success"){
                 $("#exampleModal").modal("hide");
-                swal("Great", "Successfully Client Data Inserted", "success");
+                swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
-                location.reload();
+                $("#transactionModal").modal("show");
+                setTimeout(function(){
+                    location.reload();
+                    }, 5000);
+            }
+            else if(data == "maxdate"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date  is full</div>');
+                form[0].reset();
+                
+            }
+            else if(data == "onedate"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, You have already scheduled in this date </div>');
+                form[0].reset();
+            }
+            else if(data == "notofficehr"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, The Clinic open time are 8:00 AM TO 4:00 PM </div>');
+                form[0].reset();
+            }
+            else if(data == "onetime"){
+                
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time is not available </div>');
+                form[0].reset();
+            }
+            else if(data == "holidays"){
+                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date is holiday </div>');
+                form[0].reset();
+            }
+            else if(data == "today"){
+                $('#form_result').html('<div class="alert alert-danger">Error, You can`t make schedule today</div>');
+                form[0].reset();
             }
         },
 
@@ -178,11 +293,28 @@ $('#form-submit').on('submit',function(event) {
 
         complete: function(){
 				$(".load").fadeOut();
+               
 			},
         });
 
         
     });
+
+    function getErrorData(error){
+        $.ajax({
+            url: "errordata/"+error,
+            type: "get",
+            dataType: "HTMl",
+            success: function(response){
+                console.log(response);
+                $(".showError").html(response);
+            }
+        })
+    };
+    
+    $('.modal').on('hidden.bs.modal', function () {
+    $('.showError').html('');
+    })
 
 </script>
 @endsection

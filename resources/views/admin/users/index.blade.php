@@ -102,6 +102,7 @@
 @parent
 <script>
     $(function () {
+        
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('user_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
