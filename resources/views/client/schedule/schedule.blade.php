@@ -104,14 +104,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Transaction</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-                <div class="modal-body">
-                    View your transaction here
-                    <a href="{{ route("admin.schedule.list") }}" >Transaction</a>
-                </div>
+                    <div class="modal-body">
+                        View your transaction here
+                        <a href="{{ route("admin.schedule.list") }}" >Transaction</a>
+                        <br>
+                        Click close to refresh:
+                        <button type="button" name="close_transaction" id="close_transaction" class="btn btn-white text-primary">Close</button>
+                       
+                    </div>
                 <div class="modal-footer showError">
                 </div>
             </div>
@@ -176,7 +180,9 @@
             })
         });
 
-        
+$('#close_transaction').click(function(){
+    location.reload();
+});
 
     function getCustomerData(){
         $.ajax({
@@ -211,9 +217,6 @@
                 swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
                 $("#transactionModal").modal("show");
-                setTimeout(function(){
-                    location.reload();
-                    }, 5000);
             }
             else if(data == "maxdate"){
                 
