@@ -39,7 +39,7 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Full Date : </label>
+                                <label class="control-label" >Full Date : </label>
                                 <input type="number" id="fulldate" name="fulldate" class="form-control" placeholder="Choose a number" required /> 
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-fulldate"></strong>

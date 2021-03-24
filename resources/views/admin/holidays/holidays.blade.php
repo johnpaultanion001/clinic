@@ -43,14 +43,14 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Name Of Holiday : </label>
+                                <label class="control-label" >Name Of Holiday : </label>
                                 <input type="text" name="name" id="name" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-name"></strong>
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Date Of Holiday : </label>
+                                <label class="control-label" >Date Of Holiday : </label>
                                 <input type="text" id="date_holiday" name="date_holiday" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-date_holiday"></strong>

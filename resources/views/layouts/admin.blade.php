@@ -39,6 +39,18 @@
                   50% 50% 
                   no-repeat;
     }
+    
+    .form-control{
+      border: 1px solid black;
+    border-radius: 4px;
+    color: black;
+    }
+    .select2{
+      border: 1px solid black;
+      border-radius: 4px;
+    }
+    
+
   </style>
     @yield('styles')
 </head>
@@ -101,7 +113,7 @@
                   <div class="float-left d-none d-sm-block">
                       {{-- <b>Version</b> 3.1.0-pre --}}
                   </div>
-                  <strong>Copyright &copy; 2020-2021 {{ trans('panel.site_title') }}</strong> All rights reserved.
+                  <strong>Copyright &copy; 2021-2022 {{ trans('panel.site_title') }}</strong> All rights reserved.
               </footer>
             </div>
 

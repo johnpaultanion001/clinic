@@ -42,7 +42,7 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Name : </label>
+                                <label class="control-label" >Name : </label>
                                 <input type="text" name="name" id="name" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-name"></strong>

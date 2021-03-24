@@ -180,12 +180,23 @@ class ScheduleController extends Controller
             $purposes = Purpose::latest()->get();
             return view('client.transactions.transaction-admin', compact('schedules', 'purposes'));
         }else{
-            $schedule = Schedule::where('user_id', $userid)
-                                    ->where('isCancel', '0')       
-                                    ->orderBy('date_time', 'ASC')
-                                    ->first();  
-            $purposes = Purpose::latest()->get();
-            return view('client.transactions.transaction-client', compact('schedule', 'purposes'));
+            try{
+                $schedules = Schedule::where('user_id', $userid)
+                                        ->where('isCancel', '0')       
+                                        ->orderBy('date_time', 'ASC')
+                                        ->get();  
+                $purposes = Purpose::latest()->get();
+
+                if (!$schedules->isEmpty()){
+                    $schedule = $schedules->first();
+                    return view('client.transactions.transaction-client', compact('schedule', 'purposes'));
+                }
+                return redirect('admin/schedule')->with('error', 'Your transaction is empty , choose a schedule here');
+              }
+            catch(\Exception $e){
+            return view('client.transactions.transaction-client')->with('error', $e->getMessage());
+            
+            }
         }
        
     }

@@ -20,10 +20,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <style>
-        #sticky-footer {
-            flex-shrink: none;
-            
-            }
+      
         footer {
         position: fixed;
         height: 50px;
@@ -31,6 +28,11 @@
         left: 0px;
         right: 0px;
         margin-bottom: 0px;
+        }
+        .form-control{
+        border: 1px solid black;
+        border-radius: 4px;
+        color: black;
         }
                 
             

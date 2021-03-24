@@ -45,7 +45,7 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Name : </label>
+                                <label class="control-label" >Name : </label>
                                 <input type="text" name="name" id="name" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-name"></strong>
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Email: </label>
+                                <label class="control-label" >Email: </label>
                                 <input type="email" name="email" id="email" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-email"></strong>
@@ -61,7 +61,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Contact Number: </label>
+                                <label class="control-label" >Contact Number: </label>
                                 <input type="number" name="number" id="number" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-number"></strong>

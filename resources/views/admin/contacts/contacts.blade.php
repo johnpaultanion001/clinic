@@ -43,14 +43,14 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Title : </label>
+                                <label class="control-label" >Title : </label>
                                 <input type="text" name="title" id="title" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-title"></strong>
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4" >Body : </label>
+                                <label class="control-label" >Body : </label>
                                 <textarea name="body" id="body" class="form-control" ></textarea>
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-body"></strong>

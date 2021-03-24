@@ -42,6 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                 
                             <tr data-entry-id="{{ $schedule->id }}">
                                 <td>
 
@@ -85,6 +86,7 @@
                                            
                                 </td>
                             </tr>
+                       
                     </tbody>
                 </table>
             </div>
