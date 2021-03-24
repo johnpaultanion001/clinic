@@ -24,6 +24,14 @@
             flex-shrink: none;
             
             }
+        footer {
+        position: fixed;
+        height: 50px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin-bottom: 0px;
+        }
                 
             
     </style>
@@ -33,20 +41,28 @@
     @yield('styles')
 </head>
 <body class="sidebar-fixed aside-menu-fixed aside-menu-hidden login-page">
-    
+
+
      @include('partials.landingpage-navbar')
-    <div class="app-body">
-        
+<br>
+<br>
+<br>
+    <div class="app-body" >
         <main class="main">
-            <div class="container-fluid" style="padding-top: 20px">  
+            <div class="container-fluid" style="margin-top: 20px">  
                 @yield('content')
             </div>
-
-
         </main>
     </div>
+    <br>
+<br>
+        @include('partials.landingpage-footer')
+
 </body>
-@include('partials.landingpage-footer')
+
+
+
+
     @yield('scripts')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

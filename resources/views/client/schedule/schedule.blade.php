@@ -35,6 +35,7 @@
                         <div align="right">
                             <button type="button" name="create_record" id="create_record" data-toggle="modal" data-target="#exampleModal" class=" btn btn-success">Add Schedule</button>
                             <a href="{{ route("admin.schedule.list") }}" class=" btn btn-success">Trasaction List</a>
+                            
                         </div>
                     </div>
                
@@ -74,8 +75,8 @@
                             
                             <div class="form-group">
                                 <label class="control-label" >Services: </label>
-                                <select name="purpose_id" id="purpose_id" class="form-control select2">
-                                    <option value="" disabled selected>Select Services</option>
+                                <select name="purpose_id" id="purpose_id" class="form-control select2" required>
+                                    <option value="0" disabled selected>Select Services</option>
                                     @foreach ($purposes as $purpose)
                                         <option value="{{$purpose->id}}">{{$purpose->name}}</option>
                                     @endforeach
@@ -103,20 +104,19 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Transaction</h5>
-                <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="exampleModalLabel">Successfully Scheduled Data Inserted</h5>
+                
                 </div>
                     <div class="modal-body">
                         View your transaction here
                         <a href="{{ route("admin.schedule.list") }}" >Transaction</a>
                         <br>
-                        Click close to refresh:
-                        <button type="button" name="close_transaction" id="close_transaction" class="btn btn-white text-primary">Close</button>
+                        
                        
                     </div>
-                <div class="modal-footer showError">
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="{{ route("admin.schedule.list") }}" >Print Now</a>
+                    <button type="button" name="close_transaction" id="close_transaction" class="btn btn-primary">Print Later</button>
                 </div>
             </div>
         </div>
@@ -158,17 +158,28 @@
                           var today = moment().format('YYYY-MM-DD');
 
                           if (isWeekend) {
-                              alert('can\'t add event - weekend');
-
+                                $.alert({
+                                    title: 'Message Error',
+                                    content: 'Can\'t add event - weekend',
+                                    type: 'red',
+                                })
                               return false;
                           }
                           else if(clickdate < today){
-                           alert("Past date event not allowed ");
+                           $.alert({
+                                    title: 'Message Error',
+                                    content: 'Past date event not allowed ',
+                                    type: 'red',
+                                })
                            $('#calendar').fullCalendar('unselect');
                            return false
                             }
                        else if(clickdate == today){
-                             alert("You can`t make schedule today");
+                             $.alert({
+                                    title: 'Message Error',
+                                    content: 'You can`t make schedule today',
+                                    type: 'red',
+                                })
                              $('#calendar').fullCalendar('unselect');
                              return false
                              }
@@ -183,6 +194,7 @@
 $('#close_transaction').click(function(){
     location.reload();
 });
+
 
     function getCustomerData(){
         $.ajax({
@@ -214,37 +226,59 @@ $('#close_transaction').click(function(){
         success: function(data){
             if(data == "success"){
                 $("#exampleModal").modal("hide");
-                swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
-                $("#transactionModal").modal("show");
+                $('#transactionModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
             }
             else if(data == "maxdate"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date  is full</div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen date  is full',
+                    type: 'red',
+                })
                 form[0].reset();
                 
             }
             else if(data == "onedate"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, You have already scheduled in this date </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'You have already scheduled in this date',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "notofficehr"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, The Clinic open time are 8:00 AM TO 4:00 PM </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'The Clinic open time are 8:00 AM TO 5:00 PM',
+                    type: 'red',
+                });
                 form[0].reset();
             }
             else if(data == "onetime"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time is not available </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen time is not available',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "holidays"){
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date is holiday </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen date is holiday',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "today"){
-                $('#form_result').html('<div class="alert alert-danger">Error, You can`t make schedule today</div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'You can`t make schedule today',
+                    type: 'red',
+                })
                 form[0].reset();
             }
         },
@@ -270,7 +304,11 @@ $('#close_transaction').click(function(){
             dataType: "HTMl",
             success: function(response){
                 console.log(response);
-                $(".showError").html(response);
+                $.alert({
+                    title: 'Message Error',
+                    content: response,
+                    type: 'red',
+                });
             }
         })
     };

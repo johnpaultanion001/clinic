@@ -178,13 +178,14 @@ class ScheduleController extends Controller
         if($userrole == 'Admin'){
             $schedules = Schedule::latest()->get();
             $purposes = Purpose::latest()->get();
-            return view('client.transaction', compact('schedules', 'purposes'));
+            return view('client.transactions.transaction-admin', compact('schedules', 'purposes'));
         }else{
-            $schedules = Schedule::where('user_id', $userid)
-                                    ->where('isCancel', '0')        
-                                    ->get();  
+            $schedule = Schedule::where('user_id', $userid)
+                                    ->where('isCancel', '0')       
+                                    ->orderBy('date_time', 'ASC')
+                                    ->first();  
             $purposes = Purpose::latest()->get();
-            return view('client.transaction', compact('schedules', 'purposes'));
+            return view('client.transactions.transaction-client', compact('schedule', 'purposes'));
         }
        
     }
@@ -211,14 +212,7 @@ class ScheduleController extends Controller
                                  ->get();
 
             $purposes = Purpose::latest()->get();
-            return view('client.transaction', compact('schedules', 'purposes'));
-        }else{
-            $schedules = Schedule::where('user_id', $userid)
-                                    ->whereBetween('date_time', [$start, $end])
-                                    ->where('isCancel', '0')        
-                                    ->get();  
-            $purposes = Purpose::latest()->get();
-            return view('client.transaction', compact('schedules', 'purposes'));
+            return view('client.transactions.transaction-admin', compact('schedules', 'purposes'));
         }
 
 

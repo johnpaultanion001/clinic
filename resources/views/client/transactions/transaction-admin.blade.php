@@ -157,7 +157,7 @@
                             
                             <div class="form-group">
                                 <label class="control-label" >Services: </label>
-                                <select name="purpose_id" id="purpose_id" class="form-control select2">
+                                <select name="purpose_id" id="purpose_id" class="form-control select2" required>
                                     <option value="" disabled selected>Select Services</option>
                                     @foreach ($purposes as $purpose)
                                         <option value="{{$purpose->id}}">{{$purpose->name}}</option>
@@ -245,43 +245,60 @@ $('#form-submit').on('submit',function(event) {
      beforeSend: function(){
         $(".load").fadeIn();
     },
-        success: function(data){
+    success: function(data){
             if(data == "success"){
                 $("#exampleModal").modal("hide");
                 swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
                 $("#transactionModal").modal("show");
-                setTimeout(function(){
-                    location.reload();
-                    }, 5000);
             }
             else if(data == "maxdate"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date  is full</div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen date  is full',
+                    type: 'red',
+                })
                 form[0].reset();
                 
             }
             else if(data == "onedate"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, You have already scheduled in this date </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'You have already scheduled in this date',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "notofficehr"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, The Clinic open time are 8:00 AM TO 4:00 PM </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'The Clinic open time are 8:00 AM TO 5:00 PM',
+                    type: 'red',
+                });
                 form[0].reset();
             }
             else if(data == "onetime"){
-                
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen time is not available </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen time is not available',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "holidays"){
-                $('#form_result').html('<div class="alert alert-danger">Error, Your chosen date is holiday </div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'Your chosen date is holiday',
+                    type: 'red',
+                })
                 form[0].reset();
             }
             else if(data == "today"){
-                $('#form_result').html('<div class="alert alert-danger">Error, You can`t make schedule today</div>');
+                $.alert({
+                    title: 'Message Error',
+                    content: 'You can`t make schedule today',
+                    type: 'red',
+                })
                 form[0].reset();
             }
         },
@@ -293,7 +310,7 @@ $('#form-submit').on('submit',function(event) {
 
         complete: function(){
 				$(".load").fadeOut();
-               
+                location.reload();
 			},
         });
 
@@ -307,7 +324,11 @@ $('#form-submit').on('submit',function(event) {
             dataType: "HTMl",
             success: function(response){
                 console.log(response);
-                $(".showError").html(response);
+                $.alert({
+                    title: 'Message Error',
+                    content: response,
+                    type: 'red',
+                });
             }
         })
     };

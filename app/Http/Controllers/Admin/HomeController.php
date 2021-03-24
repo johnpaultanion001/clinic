@@ -45,7 +45,7 @@ class HomeController
     public function transaction()
     {
         abort_if(Gate::denies('transaction_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('client.transaction');
+        return view('client.transactions.transaction-client');
     }
     public function contact()
     {

@@ -97,14 +97,20 @@
                 
                 @yield('content')
 
+                <footer class="main-footer fixed-bottom text-center">
+                  <div class="float-left d-none d-sm-block">
+                      {{-- <b>Version</b> 3.1.0-pre --}}
+                  </div>
+                  <strong>Copyright &copy; 2020-2021 {{ trans('panel.site_title') }}</strong> All rights reserved.
+              </footer>
             </div>
 
 
         </main>
-        <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
-            {{ csrf_field() }}
-        </form>
+       
     </div>
+
+        
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -168,7 +174,8 @@
     buttons: [
       {
         extend: 'copy',
-        className: 'btn-default',
+        className: 'btn-primary',
+        titleAttr: 'Click this copy',
         text: copyButtonTrans,
         exportOptions: {
           columns: ':visible'
@@ -176,7 +183,8 @@
       },
       {
         extend: 'csv',
-        className: 'btn-default',
+        className: 'btn-primary',
+        titleAttr: 'Click this csv',
         text: csvButtonTrans,
         exportOptions: {
           columns: ':visible'
@@ -184,7 +192,8 @@
       },
       {
         extend: 'excel',
-        className: 'btn-default',
+        className: 'btn-primary',
+        titleAttr: 'Click this excel',
         text: excelButtonTrans,
         exportOptions: {
           columns: ':visible'
@@ -192,28 +201,41 @@
       },
       {
         extend: 'pdf',
-        className: 'btn-default',
+        className: 'btn-primary',
+        titleAttr: 'Click this pdf',
         text: pdfButtonTrans,
         exportOptions: {
           columns: ':visible'
         }
       },
       {
-        extend: 'print',
-        className: 'btn-default',
-        text: printButtonTrans,
-        exportOptions: {
-          columns: ':visible'
+          extend: 'print',
+          className: 'btn-primary',
+          titleAttr: 'Click this print',
+          text: printButtonTrans,
+          exportOptions: {
+            columns: ':visible'
+          },
+          customize: function ( win ) {
+                $(win.document.body)
+                    .css( 'font-size', '10pt' )
+                    .prepend(
+                        '<img src="<?= asset('img/logo.png') ?>" alt="Logo"  style="position:absolute; top:50; left:50; opacity: 0.1; width: 320px;" />'
+                    );
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' , 'margin-top' , '20%');
+            }
+        },
+        {
+          extend: 'colvis',
+          className: 'btn-primary',
+          titleAttr: 'Click this Column Visibility',
+          text: colvisButtonTrans,
+          exportOptions: {
+            columns: ':visible'
+          }
         }
-      },
-      {
-        extend: 'colvis',
-        className: 'btn-default',
-        text: colvisButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      }
     ]
   });
 

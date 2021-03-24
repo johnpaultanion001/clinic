@@ -1,4 +1,4 @@
-<footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+<footer id="sticky-footer" class="py-1 bg-dark text-white-50">
 
 <div class="col-md-12">
         <div class="row">
@@ -10,8 +10,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 
-               <p>Contact: 86970362
-                        <br> 09165344707</p>
+               <p>Contact: 86970362/09165344707</p>
 
             </div>
         </div>

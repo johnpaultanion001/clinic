@@ -21,7 +21,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('today', 'HomeController@index')->name('today');
 
     Route::get('about', 'HomeController@about')->name('about');
-    Route::get('transaction', 'HomeController@transaction')->name('transaction');
+    //Route::get('transaction', 'HomeController@transaction')->name('transaction');
     Route::get('contact', 'HomeController@contact')->name('contact');
 
     // Permissions
