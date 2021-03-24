@@ -205,16 +205,17 @@
             @endcan
            
             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
-                    <i class="nav-icon fas fa-fw fa-sign-out-alt">
-
-                    </i>
-                    {{ trans('global.logout') }}
+                <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="nav-icon fas fa-fw fa-sign-out-alt"></i>
+                Logout
                 </a>
             </li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>    
+        
         </ul>
 
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>
 </div>
-
