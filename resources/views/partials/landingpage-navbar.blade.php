@@ -30,9 +30,9 @@ color: #111;
       @if (Auth::user())
         <li class="nav-item font-weight-bold"><a class="nav-link js-scroll-trigger" href="/admin/today">Dashboard</a></li>
           <li class="nav-item font-weight-bold"><a class="nav-link js-scroll-trigger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>                  
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+          </form>                  
     @else
       <li class="nav-item">
          <a href="{{ route("login") }}" class="nav-link font-weight-bold {{ request()->is('login') || request()->is('login/*') ? 'navlink' : '' }}">Sign in</a>
