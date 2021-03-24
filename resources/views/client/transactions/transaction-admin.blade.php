@@ -250,7 +250,7 @@ $('#form-submit').on('submit',function(event) {
                 $("#exampleModal").modal("hide");
                 swal("Great", "Successfully Scheduled Data Inserted", "success");
                 form[0].reset();
-                $("#transactionModal").modal("show");
+                location.reload();
             }
             else if(data == "maxdate"){
                 $.alert({
@@ -310,7 +310,6 @@ $('#form-submit').on('submit',function(event) {
 
         complete: function(){
 				$(".load").fadeOut();
-                location.reload();
 			},
         });
 
