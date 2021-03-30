@@ -184,6 +184,7 @@
     pageLength: 100,
     dom: 'lBfrtip<"actions">',
     buttons: [
+        'selectAll',
       {
         extend: 'copy',
         className: 'btn-primary',
@@ -225,6 +226,7 @@
           className: 'btn-primary',
           titleAttr: 'Click this print',
           text: printButtonTrans,
+          title: '<img alt="title" src="<?= asset('img/title.png') ?>"   style="heigth: 140px; width: 500px;" />',
           exportOptions: {
             columns: ':visible'
           },
@@ -232,7 +234,7 @@
                 $(win.document.body)
                     .css( 'font-size', '10pt' )
                     .prepend(
-                        '<img src="<?= asset('img/logo.png') ?>" alt="Logo"  style="position:absolute; top:50; left:50; opacity: 0.1; width: 320px;" />'
+                        '<img src="<?= asset('img/logo.png') ?>" alt="Logo"  style="position:absolute; top:30%; left:20%; opacity: 0.1; width: 620px;" />'
                     );
                     $(win.document.body).find( 'table' )
                         .addClass( 'compact' )

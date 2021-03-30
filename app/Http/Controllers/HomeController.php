@@ -33,6 +33,6 @@ class HomeController extends Controller
         }
 
         Feedback::create($request->all());
-        return redirect('/contact')->with('success', 'Data Inserted');
+        return redirect('/contact')->with('success', 'Your feedback has been send it');
     }
 }
