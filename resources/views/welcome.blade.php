@@ -59,7 +59,7 @@
         <div class="col-md-12">
             <div class="row justify-content-center">
                 
-                <a href="/register" class="btn-lg btn-primary">REGISTER</a>
+                <a href="/register-patient" class="btn-lg btn-primary">REGISTER</a>
                     
                 
             </div>

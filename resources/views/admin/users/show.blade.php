@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.user.title') }}
+        {{ trans('global.show') }} Patient
     </div>
 
     <div class="card-body">
@@ -36,10 +36,26 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
+                            Address
                         </th>
                         <td>
-                            {{ $user->email_verified_at }}
+                            {{ $user->address}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Contact
+                        </th>
+                        <td>
+                            {{ $user->contact_number}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Valid ID
+                        </th>
+                        <td>
+                            <img src="/{{ $user->id_image}}" width=240 alt="ID">
                         </td>
                     </tr>
                     <tr>

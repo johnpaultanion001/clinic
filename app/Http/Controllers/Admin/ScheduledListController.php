@@ -21,22 +21,23 @@ class ScheduledListController extends Controller
     {
         abort_if(Gate::denies('scheduledlist_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         date_default_timezone_set('Asia/Manila');
-        $historys = Schedule::where('date_time', date('Y-m-d'))->get();  
+       
+        $historys = Schedule::whereBetween('date_time', [date('Y-m-d'), '2030-12-20'])->get();  
         return view('admin.scheduledlist.scheduledlist', compact('historys'));
     }
 
-    public function filterbydate(Request $request){
-        abort_if(Gate::denies('scheduledlist_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $this->validate($request,[
-            'date' => [
-               'required','date','after:yesterday'
-            ]
-           ]);
+    // public function filterbydate(Request $request){
+    //     abort_if(Gate::denies('scheduledlist_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    //     $this->validate($request,[
+    //         'date' => [
+    //            'required','date','after:yesterday'
+    //         ]
+    //        ]);
 
-        date_default_timezone_set('Asia/Manila');
-        $historys = Schedule::whereBetween('date_time', [date('Y-m-d'), $request->date])->get();  
-        return view('admin.scheduledlist.scheduledlist', compact('historys'));
-    }
+    //     date_default_timezone_set('Asia/Manila');
+    //     $historys = Schedule::whereBetween('date_time', [date('Y-m-d'), $request->date])->get();  
+    //     return view('admin.scheduledlist.scheduledlist', compact('historys'));
+    // }
 
     /**
      * Show the form for creating a new resource.

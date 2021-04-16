@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h4>Scheduled List</h4>
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
                         <form action="{{ route("admin.scheduled-list.filterbydate") }}" method="post" enctype="multipart/form-data">
@@ -28,7 +28,7 @@
                    
                
             </div>
-        </div>
+        </div> -->
         </div>
 
         <div class="card-body">

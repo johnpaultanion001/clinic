@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Database;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,13 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'age' => ['required', 'string', 'max:3'],
             'address' => ['required', 'string', 'max:555'],
+            'brgy' => ['required', 'string', 'max:555'],
+            'unit' => ['nullable', 'string', 'max:555'],
+            'floor' => ['nullable', 'string', 'max:555'],
+            'bn' => ['nullable', 'string', 'max:555'],
+            'hb' => ['nullable', 'string', 'max:555'],
+            'street' => ['nullable', 'string', 'max:555'],
+            'village' => ['nullable', 'string', 'max:555'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'contact_number' => ['required', 'string', 'min:8','max:11','unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -68,16 +76,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-       
+        $database = Database::select(['name'])->get()->toArray();
+
+        if ($data['name'] == "test")
+        {
+            return view('home');
+        }
+        
         return User::create([
             'name' => $data['name'],
             'age' => $data['age'],
-            'address' => $data['address'],
+            'address' => $data['unit']. " " . $data['floor']. " "  . $data['bn'] . " " . $data['hb']. " " . $data['street']. " " . $data['village'] . " " .", Brgy. ".$data['brgy'] . " "  . $data['address'],
             'email' => $data['email'],
             'contact_number' => $data['contact_number'],
             'password' => Hash::make($data['password']),
-            //user()->roles()->sync(2),
-           
         ]);
         
       

@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4>About List</h4>
+        <h4>Databases List</h4>
         <div align="right">
             <button type="button" name="create_record" id="create_record" class="btn btn-info">Create Record</button>
         </div>
@@ -14,9 +14,8 @@
             <table id="table" class=" table table-bordered table-striped table-hover datatable datatable-Venue">
                 <thead class="bg-light">
                     <tr>
-                        <th>No.</th>
-                        <th>Title</th> 
-                        <th>Body</th>
+                        <th>ID.</th>
+                        <th>Name</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -43,19 +42,13 @@
                             <span id="form_result"></span>
                             
                             <div class="form-group">
-                                <label class="control-label" >Title : </label>
-                                <input type="text" name="title" id="title" class="form-control" />
+                                <label class="control-label" >Name : </label>
+                                <input type="text" name="name" id="name" class="form-control" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong id="error-title"></strong>
+                                    <strong id="error-name"></strong>
                                 </span>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label" >Body : </label>
-                                <textarea name="body" id="body" class="form-control" ></textarea>
-                                <span class="invalid-feedback" role="alert">
-                                    <strong id="error-body"></strong>
-                                </span>
-                            </div>
+                         
 
                             <input type="hidden" name="action" id="action" value="Add" />
                             <input type="hidden" name="hidden_id" id="hidden_id" />
@@ -84,22 +77,18 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('admin.aboutus.index') }}",
+                    url: "{{ route('admin.databases.index') }}",
                     beforeSend: function() { $('.loading').show() },
                     complete: function() { $('.loading').hide() },
                 },
                 columns: [
                     {
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
                     },
                     {
-                        data: 'title',
-                        name: 'title'
-                    },
-                    {
-                        data: 'body',
-                        name: 'body'
+                        data: 'name',
+                        name: 'name',
                     },
                     {
                         data: 'action',
@@ -123,12 +112,12 @@
             $('#myForm').on('submit', function(event){
                 event.preventDefault();
                 $('.form-control').removeClass('is-invalid')
-                var action_url = "{{ route('admin.aboutus.store') }}";
+                var action_url = "{{ route('admin.databases.store') }}";
                 var type = "POST";
 
                 if($('#action').val() == 'Edit'){
                     var id = $('#hidden_id').val();
-                    action_url = "/admin/aboutus/" + id;
+                    action_url = "/admin/databases/" + id;
                     type = "PUT";
                 }
 
@@ -173,7 +162,7 @@
                 var id = $(this).attr('edit');
 
                 $.ajax({
-                    url :"/admin/aboutus/"+id+"/edit",
+                    url :"/admin/databases/"+id+"/edit",
                     dataType:"json",
                     success:function(data){
                         $.each(data.result, function(key,value){
@@ -206,7 +195,7 @@
                             keys: ['enter', 'shift'],
                             action: function(){
                                 return $.ajax({
-                                    url:"/admin/aboutus/"+id,
+                                    url:"/admin/databases/"+id,
                                     method:'DELETE',
                                     data: {
                                         _token: '{!! csrf_token() !!}',

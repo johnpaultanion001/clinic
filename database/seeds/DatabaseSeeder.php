@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ScheduleSeeder::class,
             FullDateSeeder::class,
             FeedbackSeeder::class,
+            Database_antipoloSeedeer::class,
         ]);
     }
 }

@@ -205,20 +205,18 @@ class ScheduleController extends Controller
 
     public function filtertrasaction(Request $request){
          $this->validate($request,[
-             'date_from' => [
-                'required','date','before_or_equal:date_to'
-             ],
-             'date_to' => [
-                 'required','date',
-              ],
+                'date_from' => [
+                    'required','date',
+                ],
             ]);
-        $start = Carbon::parse($request->date_from);
-        $end = Carbon::parse($request->date_to);
+            
+        
+        $end = Carbon::parse($request->date_from);
         $userrole = auth()->user()->roles()->getQuery()->pluck('title')->first();
         $userid = auth()->user()->id;
 
         if($userrole == 'Admin'){
-            $schedules = Schedule::whereBetween('date_time', [$start, $end])
+            $schedules = Schedule::whereBetween('date_time', ["2019-03-12", $end])
                                  ->latest()
                                  ->get();
 

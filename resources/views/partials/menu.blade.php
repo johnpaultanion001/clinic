@@ -196,7 +196,15 @@
                                     <i class="fa-fw fas fa-user nav-icon">
 
                                     </i>
-                                    {{ trans('cruds.user.title') }}
+                                     Patients List 
+                                </a>
+                            </li>
+                        @endcan
+                        @can('databases_access')
+                            <li class="nav-item">
+                                <a href="{{ route("admin.databases.index") }}" class="nav-link {{ request()->is('admin/databases') || request()->is('admin/databases/*') ? 'active' : '' }}">
+                                 <i class="nav-icon far fa-folder"></i>
+                                     Databases
                                 </a>
                             </li>
                         @endcan

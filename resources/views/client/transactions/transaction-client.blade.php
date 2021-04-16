@@ -3,6 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h4>Transaction List</h4>
+            <h6 class="text-primary">“Reminder to come 30 minutes before the schedule”</h6> 
         </div>
 
         <div class="card-body">

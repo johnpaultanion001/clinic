@@ -46,7 +46,7 @@
                             
                             <div class="form-group">
                                 <label class="control-label" >Name : </label>
-                                <input type="text" name="name" id="name" class="form-control" />
+                                <input type="text" name="name" id="name" class="disable form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-name"></strong>
                                 </span>
@@ -54,7 +54,7 @@
 
                             <div class="form-group">
                                 <label class="control-label" >Email: </label>
-                                <input type="email" name="email" id="email" class="form-control" />
+                                <input type="email" name="email" id="email" class="disable form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-email"></strong>
                                 </span>
@@ -62,7 +62,7 @@
 
                             <div class="form-group">
                                 <label class="control-label" >Contact Number: </label>
-                                <input type="number" name="number" id="number" class="form-control" />
+                                <input type="number" name="number" id="number" class="disable form-control" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-number"></strong>
                                 </span>
@@ -70,7 +70,7 @@
 
                             <div class="form-group">
                                 <label class="control-label col-md-6" >Comment/Message: </label>
-                                <textarea name="msg" id="msg" class="form-control" ></textarea>
+                                <textarea name="msg" id="msg" class="disable form-control" ></textarea>
                                 <span class="invalid-feedback" role="alert">
                                     <strong id="error-msg"></strong>
                                 </span>
@@ -143,7 +143,10 @@
                 $('#action_button').val('Save');
                 $('#action').val('Add');
                 $('#form_result').html('');
+                $('.disable').attr('disabled', false)
                 $('#formModal').modal('show');
+                $('#action_button').show();
+
             });
 
 
@@ -196,6 +199,7 @@
             $(document).on('click', '.edit', function(){
                 $('#myForm')[0].reset();
                 $('.form-control').removeClass('is-invalid')
+                $('.disable').attr('disabled', true)
                 $('#form_result').html('');
                 var id = $(this).attr('edit');
 
@@ -209,8 +213,8 @@
                             }
                         })
                         $('#hidden_id').val(id);
-                        $('.modal-title').text('Edit Record');
-                        $('#action_button').val('Update');
+                        $('.modal-title').text('Show Record');
+                        $('#action_button').hide();
                         $('#action').val('Edit');
                         $('#formModal').modal('show');
                     }

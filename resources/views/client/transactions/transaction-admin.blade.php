@@ -12,16 +12,16 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group">
-                                                <small>From : </small>
+                                                <small>Filter By Date : </small>
                                                 <input type="text" id="date_from" name="date_from" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <!-- <div class="col-md-5">
                                             <div class="form-group">
                                                 <small>To : </small>
                                                 <input type="text" id="date_to" name="date_to" class="form-control filterdate" placeholder="Choose a Date" autocomplete="off" required /> 
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-2">
                                         <br>
                                              <input class=" form-group btn btn-info" type="submit" value="Filter">  

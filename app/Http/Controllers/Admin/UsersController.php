@@ -11,6 +11,7 @@ use App\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use File;
 
 class UsersController extends Controller
 {
@@ -71,9 +72,8 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        File::delete(public_path($user->id_image));
         $user->delete();
-
         return back();
     }
 
