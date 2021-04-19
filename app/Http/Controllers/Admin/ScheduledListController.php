@@ -22,7 +22,7 @@ class ScheduledListController extends Controller
         abort_if(Gate::denies('scheduledlist_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         date_default_timezone_set('Asia/Manila');
        
-        $historys = Schedule::whereBetween('date_time', [date('Y-m-d'), '2030-12-20'])->get();  
+        $historys = Schedule::where('date_time', date('Y-m-d'))->get();  
         return view('admin.scheduledlist.scheduledlist', compact('historys'));
     }
 

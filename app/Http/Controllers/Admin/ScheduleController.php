@@ -216,9 +216,8 @@ class ScheduleController extends Controller
         $userid = auth()->user()->id;
 
         if($userrole == 'Admin'){
-            $schedules = Schedule::whereBetween('date_time', ["2019-03-12", $end])
-                                 ->latest()
-                                 ->get();
+            $schedules = Schedule::where('date_time', $end)
+                                   ->get();
 
             $purposes = Purpose::latest()->get();
             return view('client.transactions.transaction-admin', compact('schedules', 'purposes'));

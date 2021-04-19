@@ -35,7 +35,7 @@
 
             @can('history_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.histories.index") }}" class="nav-link {{ request()->is('admin/histories') || request()->is('admin/historiest/*') ? 'active' : '' }}">
+                    <a href="{{ route("admin.histories.index") }}" class="nav-link {{ request()->is('admin/histories') || request()->is('admin/histories-filter') ? 'active' : '' }}">
                       <i class="nav-icon far fa-folder"></i>
                             Histories List
                     </a>

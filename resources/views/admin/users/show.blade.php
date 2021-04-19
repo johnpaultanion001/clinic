@@ -55,7 +55,7 @@
                             Valid ID
                         </th>
                         <td>
-                            <img src="/{{ $user->id_image}}" width=240 alt="ID">
+                                <a href="/{{ $user->id_image}}"> <img src="/{{ $user->id_image}}" width=240 alt="ID"> </a> 
                         </td>
                     </tr>
                     <tr>
